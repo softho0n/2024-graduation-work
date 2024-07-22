@@ -223,11 +223,6 @@ const signUpForm = () => {
         type="text"
         name="username"
       />
-      <F.InputWithLabel
-        label="학번 입력"
-        onChange={handleChange}
-        name="studentId"
-      />
       {/* <F.InputWithLabel
         label="전화번호 입력"
         onChange={handleChange}
