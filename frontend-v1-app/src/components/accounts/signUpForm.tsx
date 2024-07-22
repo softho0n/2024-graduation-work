@@ -150,19 +150,14 @@ const signUpForm = () => {
   const handleSubmit = () => {
     async function fn() {
       const data = {
-        userName: username,
-        name,
-        passWord: password,
-        phone,
-        email,
-        studentId,
-        major,
-        campus,
+        username: username,
+        password: password,
+        nickname: name,
       };
       try {
         alert("잠시만 기다려주세요!");
         const response = await Axios.post(
-          "http://localhost:8000/user/join/",
+          "http://localhost:8000/user/signup/",
           data
         );
         alert("회원가입 성공!");
@@ -172,11 +167,7 @@ const signUpForm = () => {
         alert(error);
       }
     }
-    if (checkEmailCode && checkName && checkUsername) {
-      fn();
-    } else {
-      alert("인증과정을 모두 거쳐야합니다.");
-    }
+    fn();
   };
 
   return (
@@ -215,33 +206,39 @@ const signUpForm = () => {
         type="text"
         name="code"
       /> */}
-      <F.InputWithLabelWithButton
+      {/* <F.InputWithLabelWithButton
         label="ID 입력"
         btnLabel="중복확인"
         onClick={handleCheckUsername}
         onChange={handleChange}
         type="text"
         name="username"
-      />
-      {/* <F.InputWithLabel
-        label="전화번호 입력"
-        onChange={handleChange}
-        type="text"
-        name="phone"
       /> */}
+      <F.InputWithLabel
+        label="ID 입력"
+        type="username"
+        name="username"
+        onChange={handleChange}
+      />
       <F.InputWithLabel
         label="비밀번호 입력"
         type="password"
         name="password"
         onChange={handleChange}
       />
-      <F.InputWithLabelWithButton
+      {/* <F.InputWithLabelWithButton
         label="닉네임 입력"
         btnLabel="중복확인"
         onClick={handleCheckName}
         onChange={handleChange}
         type="text"
         name="name"
+      /> */}
+      <F.InputWithLabel
+        label="닉네임 입력"
+        type="text"
+        name="name"
+        onChange={handleChange}
       />
       <F.AuthButton id="signup_btn" onClick={handleSubmit}>
         회원가입

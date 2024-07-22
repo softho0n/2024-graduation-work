@@ -7,16 +7,11 @@ const layout = ({ children, homeNum, loginPage, signUpPage }) => {
   return (
     <div className="app">
       <div className="header">
-        {homeNum ? (
-          <div />
-        ) : (
-          <S.LogoImage
-            src="/logo_skku.png"
-            alt="SKMG"
-            onClick={(event) => router.push("/")}
-          />
-        )}
-
+        <S.LogoImage
+          src="/logo_skku.png"
+          alt="SKMG"
+          onClick={(event) => router.push("/")}
+        />
         <S.TopNav>
           {signUpPage ? (
             <S.TopNavUL>
@@ -45,7 +40,14 @@ const layout = ({ children, homeNum, loginPage, signUpPage }) => {
                 충전하기
               </S.TopNavLI>
               <S.TopNavLI>찜 목록</S.TopNavLI>
-              <S.TopNavLI>로그아웃</S.TopNavLI>
+              <S.TopNavLI
+                onClick={(event) => {
+                  localStorage.removeItem("jwtToken");
+                  router.push("/accounts/login");
+                }}
+              >
+                로그아웃
+              </S.TopNavLI>
             </S.TopNavUL>
           ) : (
             <div></div>

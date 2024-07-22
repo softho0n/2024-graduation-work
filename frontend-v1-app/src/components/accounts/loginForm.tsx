@@ -20,7 +20,7 @@ const loginForm = () => {
 
   const handleLogin = (e) => {
     async function fn() {
-      const data = { userName: id, passWord: password };
+      const data = { username: id, password: password };
       try {
         alert("잠시만 기다려주세요!");
         const response = await Axios.post(
@@ -28,10 +28,10 @@ const loginForm = () => {
           data
         );
         const {
-          data: { token },
+          data: { access_token },
         } = response;
 
-        localStorage.setItem("jwtToken", token);
+        localStorage.setItem("jwtToken", access_token);
         localStorage.setItem("userID", id);
         router.push("/");
       } catch (error) {
