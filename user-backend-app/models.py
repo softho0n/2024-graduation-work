@@ -7,3 +7,12 @@ class Token(BaseModel):
 
 class TokenRequest(BaseModel):
     access_token: str
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+    
+class SignUpRequest(BaseModel):
+    username: str
+    password: str
+    nickname: str

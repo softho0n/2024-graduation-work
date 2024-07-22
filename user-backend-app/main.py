@@ -4,13 +4,14 @@ from typing import List, Union
 from const import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
 from crud import (  # add_chat,; db_add_friend,; db_get_friend_info,; db_update_user,; get_chat,
     db_create_new_user,
+    db_get_user_by_nickname,
     db_get_user_by_username,
 )
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from models import Token, TokenRequest
+from models import LoginRequest, SignUpRequest, Token, TokenRequest
 from passlib.context import CryptContext
 from pymongo import MongoClient
 from typing_extensions import Annotated
@@ -37,9 +38,10 @@ app.add_middleware(
 )
 
 @app.post("/user/signup")
-def register_user(response:Response, data:OAuth2PasswordRequestForm = Depends()):
-    username = data.username
-    password = get_password_hash(pwd_context, data.password)
+def register_user(request: SignUpRequest):
+    username = request.username
+    password = get_password_hash(pwd_context, request.password)
+    nickname = request.nickname
     
     already_exists_user = db_get_user_by_username(user_collection, username)
     
@@ -49,12 +51,20 @@ def register_user(response:Response, data:OAuth2PasswordRequestForm = Depends())
             detail="There is already same name user.",
             headers={"WWW-Authenticate": "Bearer"}
         )
+    
+    already_exists_user = db_get_user_by_nickname(user_collection, nickname)
+    if not already_exists_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="There is already same name user.",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
      
     new_user = {
         "username": username,
-        "password": password, 
+        "password": password,
+        "nickname": nickname,
     }
-    
     user_id = db_create_new_user(user_collection, new_user)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
@@ -66,7 +76,7 @@ def register_user(response:Response, data:OAuth2PasswordRequestForm = Depends())
 @app.post("/user/login")
 async def login_for_access_token(
     response: Response,
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    form_data: LoginRequest,
 ) -> Token:
     hashed_password = get_password_hash(pwd_context, form_data.password) 
     user = db_get_user_by_username(user_collection, form_data.username)
