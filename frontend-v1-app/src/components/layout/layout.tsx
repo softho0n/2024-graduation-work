@@ -33,7 +33,7 @@ const layout = ({ children, homeNum, loginPage, signUpPage }) => {
           )}
           {homeNum ? (
             <S.TopNavUL>
-              <S.TopNavLI onClick={(event) => router.push("/accounts/signup")}>
+              <S.TopNavLI onClick={(event) => router.push("/accounts/profile")}>
                 내 프로필
               </S.TopNavLI>
               <S.TopNavLI onClick={(event) => router.push("/accounts/login")}>
