@@ -21,7 +21,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI()
 
-client = MongoClient()
+client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
 db = client.test_database
 user_collection = db.users
 
