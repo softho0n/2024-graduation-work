@@ -6,6 +6,7 @@ from crud import (  # add_chat,; db_add_friend,; db_get_friend_info,; db_update_
     db_create_new_user,
     db_get_user_by_nickname,
     db_get_user_by_username,
+    db_update_user,
 )
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,7 +22,8 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI()
 
-client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
+# client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
+client = MongoClient()
 db = client.test_database
 user_collection = db.users
 
@@ -114,3 +116,52 @@ async def validate_token(request: TokenRequest):
         return {"valid": True, "username": username}
     except JWTError:
         return {"valid": False, "username": ""}
+    
+@app.post("/user/profile")
+async def get_user_profile(request: TokenRequest):
+    try:
+        payload = jwt.decode(request.access_token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        user = db_get_user_by_username(user_collection, username)
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return {"username": user["username"], "password": user["password"], "nickname": user["nickname"]}
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        
+@app.post("/user/update_profile")
+async def update_profile(request: SignUpRequest):
+    username = request.username
+    password = get_password_hash(pwd_context, request.password)
+    nickname = request.nickname
+    
+    current_user = db_get_user_by_username(user_collection, username)
+    update_cmd = {
+        "$set": {
+            "username": username,
+            "password": password,
+            "nickname": nickname
+        }
+    }
+    
+    try:
+        db_update_user(user_collection, current_user, update_cmd)
+        return {"status": 202, "msg": "txn was executed well."}
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Something Wrong.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        
+    
+    
+    

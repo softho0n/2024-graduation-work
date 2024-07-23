@@ -16,3 +16,4 @@ class SignUpRequest(BaseModel):
     username: str
     password: str
     nickname: str
+    
