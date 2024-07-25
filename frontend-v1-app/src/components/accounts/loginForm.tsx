@@ -45,12 +45,12 @@ const loginForm = () => {
   return (
     <S.AuthWrapper desc="Welcome to SKKU music streaming service 🤚">
       <S.InputWithLabel
-        label="ID"
+        label="아이디"
         name="id"
         onChange={handleChange}
       ></S.InputWithLabel>
       <S.InputWithLabel
-        label="PASSWORD"
+        label="패스워드"
         type="password"
         name="password"
         onChange={handleChange}

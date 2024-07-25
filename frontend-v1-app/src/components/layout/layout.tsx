@@ -36,7 +36,7 @@ const layout = ({ children, homeNum, loginPage, signUpPage }) => {
               <S.TopNavLI onClick={(event) => router.push("/accounts/profile")}>
                 내 프로필
               </S.TopNavLI>
-              <S.TopNavLI onClick={(event) => router.push("/accounts/login")}>
+              <S.TopNavLI onClick={(event) => router.push("/payments/charge")}>
                 충전하기
               </S.TopNavLI>
               <S.TopNavLI>찜 목록</S.TopNavLI>

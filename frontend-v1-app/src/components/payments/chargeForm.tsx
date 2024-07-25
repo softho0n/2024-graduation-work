@@ -1,13 +1,12 @@
 // Todo: AppLayout 수정 필요
 import { use, useEffect, useRef, useState } from "react";
-import * as F from "./profileForm.styled";
+import * as F from "./chargeForm.styled";
 import Axios from "axios";
-import { useRouter } from "next/router";
-const profileForm = () => {
+const chargeForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const router = useRouter();
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     // document.cookie = `token=${token}`;
@@ -33,10 +32,10 @@ const profileForm = () => {
         // setUsername(userName);
         // setCampus(campus);
       } catch (error) {
-        router.push("/accounts/login");
+        alert(error);
       }
     }
-    fn();
+    // fn();
   }, []);
 
   const handleSubmit = () => {
@@ -69,36 +68,21 @@ const profileForm = () => {
   };
 
   return (
-    <F.AuthWrapper desc="내 프로필 보기">
+    <F.AuthWrapper desc="음원 다운로드를 위한 머니 충전하기">
       <F.verticalWrapper>
         <F.InputWithLabel
-          label="아이디"
-          name="username"
-          value={username}
-          readonly="readonly"
-        />
-      </F.verticalWrapper>
-      <F.verticalWrapper>
-        <F.InputWithLabel
-          label="패스워드"
-          type="password"
-          name="password"
-          value={password}
-          onChange={handleChange}
-        />
-      </F.verticalWrapper>
-      <F.verticalWrapper>
-        <F.InputWithLabel
-          label="닉네임"
-          name="nickname"
-          value={nickname}
+          label="충전금액"
+          // type="password"
+          name="money"
+          // value={password}
+          placeholder="충전 금액을 입력 해주세요.   ex) 5000"
           onChange={handleChange}
         />
       </F.verticalWrapper>
 
-      <F.AuthButton onClick={handleSubmit}>변경하기</F.AuthButton>
+      <F.AuthButton onClick={handleSubmit}>충전하기</F.AuthButton>
     </F.AuthWrapper>
   );
 };
 
-export default profileForm;
+export default chargeForm;
