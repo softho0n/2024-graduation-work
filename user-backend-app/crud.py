@@ -8,7 +8,7 @@ def db_get_user_by_nickname(user_collection, nickname):
     return user_collection.find_one({"nickname": nickname})
 
 def db_get_user(user_collection, name, password):
-    return user_collection.find_one({"usename": name, "password": password})
+    return user_collection.find_one({"username": name, "password": password})
 
 def db_update_user(user_collection, src_document, update_command):
     user_collection.update_one(src_document, update_command)    
