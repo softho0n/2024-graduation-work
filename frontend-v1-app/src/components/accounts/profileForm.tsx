@@ -2,11 +2,12 @@
 import { use, useEffect, useRef, useState } from "react";
 import * as F from "./profileForm.styled";
 import Axios from "axios";
+import { useRouter } from "next/router";
 const profileForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-
+  const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     // document.cookie = `token=${token}`;
@@ -32,7 +33,7 @@ const profileForm = () => {
         // setUsername(userName);
         // setCampus(campus);
       } catch (error) {
-        alert(error);
+        router.push("/accounts/login");
       }
     }
     fn();

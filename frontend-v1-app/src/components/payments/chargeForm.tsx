@@ -68,12 +68,12 @@ const chargeForm = () => {
   };
 
   return (
-    <F.AuthWrapper desc="충전하기">
+    <F.AuthWrapper desc="음원 다운로드를 위한 머니 충전하기">
       <F.verticalWrapper>
         <F.InputWithLabel
           label="충전금액"
           // type="password"
-          name="password"
+          name="money"
           // value={password}
           placeholder="충전 금액을 입력 해주세요.   ex) 5000"
           onChange={handleChange}
