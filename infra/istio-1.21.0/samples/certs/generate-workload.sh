@@ -108,4 +108,3 @@ cat "$rootcert" >> "$FINAL_DIR/workload-$sa-root-certs.pem"
 
 echo "Generated workload-$sa-[cert|key].pem with URI SAN $san"
 openssl verify -CAfile <(cat "$certchain" "$rootcert") "$FINAL_DIR/workload-$sa-cert.pem"
-

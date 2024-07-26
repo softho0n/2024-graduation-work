@@ -6,7 +6,7 @@ const chargeForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-
+  const [money, setMoney] = useState("");
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     // document.cookie = `token=${token}`;
@@ -39,18 +39,20 @@ const chargeForm = () => {
   }, []);
 
   const handleSubmit = () => {
+    const token = localStorage.getItem("jwtToken");
     async function fn() {
       const data = {
-        username,
-        password,
-        nickname,
+        access_token: token,
+        money_amount: money,
       };
       try {
         const response = await Axios.post(
-          "http://localhost:8000/user/update_profile/",
+          // "http://localhost:8000/user/update_profile/",
+          // "http://localhost:8001/payments/charge",
+          "/api/payments/charge",
           data
         );
-        alert("프로필이 업데이트 되었습니다.");
+        alert("정상적으로 충전되었습니다.");
       } catch (error) {
         alert(error);
       }
@@ -60,10 +62,8 @@ const chargeForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "password") {
-      setPassword(value);
-    } else if (name === "nickname") {
-      setNickname(value);
+    if (name === "money") {
+      setMoney(value);
     }
   };
 
