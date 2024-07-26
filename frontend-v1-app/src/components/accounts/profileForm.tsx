@@ -7,6 +7,8 @@ const profileForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [money, setMoney] = useState("");
+
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
@@ -18,6 +20,7 @@ const profileForm = () => {
         };
         const response = await Axios.post(
           "http://localhost:8000/user/profile/",
+          //   "/api/user/profile",
           data
         );
         console.log(response);
@@ -29,6 +32,16 @@ const profileForm = () => {
         setPassword(password);
         setNickname(nickname);
 
+        const charge_response = await Axios.post(
+          "http://localhost:8001/payments/get_money/",
+          //   "/api/payments/get_money",
+          data
+        );
+        const {
+          data: { money },
+        } = charge_response;
+
+        setMoney(money);
         // setEmail(email);
         // setUsername(userName);
         // setCampus(campus);
@@ -48,7 +61,8 @@ const profileForm = () => {
       };
       try {
         const response = await Axios.post(
-          "http://localhost:8000/user/update_profile/",
+          //   "http://localhost:8000/user/update_profile/",
+          "/api/user/update_profile",
           data
         );
         alert("프로필이 업데이트 되었습니다.");
@@ -93,6 +107,14 @@ const profileForm = () => {
           name="nickname"
           value={nickname}
           onChange={handleChange}
+        />
+      </F.verticalWrapper>
+      <F.verticalWrapper>
+        <F.InputWithLabel
+          label="잔액"
+          name="money"
+          value={money}
+          readonly="readonly"
         />
       </F.verticalWrapper>
 

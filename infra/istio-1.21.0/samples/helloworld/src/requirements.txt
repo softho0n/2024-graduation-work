@@ -1,8 +1,8 @@
-requests
 flask
-flask_json
 flask_bootstrap
-json2html
-simplejson
+flask_json
 gevent
 gunicorn
+json2html
+requests
+simplejson

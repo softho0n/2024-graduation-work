@@ -8,11 +8,12 @@ from settings import DevSettings, ProdSettings
 
 
 def get_settings():
-    env = os.getenv('ENVIRONMENT', 'dev')
-    if env == 'prod':
+    env = os.getenv("ENVIRONMENT", "dev")
+    if env == "prod":
         return ProdSettings()
     else:
         return DevSettings()
+
 
 def verify_password(pwd_context, plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -20,6 +21,7 @@ def verify_password(pwd_context, plain_password, hashed_password):
 
 def get_password_hash(pwd_context, password):
     return pwd_context.hash(password)
+
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()

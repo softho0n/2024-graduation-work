@@ -25,21 +25,24 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI()
 
-env = os.getenv('ENVIRONMENT', 'dev')
+env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
     client = MongoClient()
 else:
-    client = MongoClient(host=settings.MONGO_DB_HOST, port=settings.MONGO_DB_PORT, username=settings.MONGO_DB_USERNAME, password=settings.MONGO_DB_PASSWORD)
-    
+    client = MongoClient(
+        host=settings.MONGO_DB_HOST,
+        port=settings.MONGO_DB_PORT,
+        username=settings.MONGO_DB_USERNAME,
+        password=settings.MONGO_DB_PASSWORD,
+    )
+
 
 # client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
 # client = MongoClient()
 db = client.test_database
 user_collection = db.users
 
-origins = [
-	"*"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -49,29 +52,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.post("/user/signup")
 def register_user(request: SignUpRequest):
     username = request.username
     password = get_password_hash(pwd_context, request.password)
     nickname = request.nickname
-    
+
     already_exists_user = db_get_user_by_username(user_collection, username)
-    
+
     if not already_exists_user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="There is already same name user.",
-            headers={"WWW-Authenticate": "Bearer"}
+            headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     already_exists_user = db_get_user_by_nickname(user_collection, nickname)
     if not already_exists_user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="There is already same name user.",
-            headers={"WWW-Authenticate": "Bearer"}
+            headers={"WWW-Authenticate": "Bearer"},
         )
-     
+
     new_user = {
         "username": username,
         "password": password,
@@ -79,9 +83,7 @@ def register_user(request: SignUpRequest):
     }
     user_id = db_create_new_user(user_collection, new_user)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": new_user["username"]}, expires_delta=access_token_expires
-    )
+    access_token = create_access_token(data={"sub": new_user["username"]}, expires_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
 
 
@@ -90,28 +92,27 @@ async def login_for_access_token(
     response: Response,
     form_data: LoginRequest,
 ) -> Token:
-    hashed_password = get_password_hash(pwd_context, form_data.password) 
+    hashed_password = get_password_hash(pwd_context, form_data.password)
     user = db_get_user_by_username(user_collection, form_data.username)
-    
+
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="There is no user.",
             headers={"WWW-Authenticate": "Bearer"},
-        )  
-    
+        )
+
     if not verify_password(pwd_context, form_data.password, user["password"]):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-        
+
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user["username"]}, expires_delta=access_token_expires
-    )
+    access_token = create_access_token(data={"sub": user["username"]}, expires_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
+
 
 @app.post("/user/validate_token")
 async def validate_token(request: TokenRequest):
@@ -126,7 +127,8 @@ async def validate_token(request: TokenRequest):
         return {"valid": True, "username": username}
     except JWTError:
         return {"valid": False, "username": ""}
-    
+
+
 @app.post("/user/profile")
 async def get_user_profile(request: TokenRequest):
     try:
@@ -146,22 +148,17 @@ async def get_user_profile(request: TokenRequest):
             detail="Invalid Token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-        
+
+
 @app.post("/user/update_profile")
 async def update_profile(request: SignUpRequest):
     username = request.username
     password = get_password_hash(pwd_context, request.password)
     nickname = request.nickname
-    
+
     current_user = db_get_user_by_username(user_collection, username)
-    update_cmd = {
-        "$set": {
-            "username": username,
-            "password": password,
-            "nickname": nickname
-        }
-    }
-    
+    update_cmd = {"$set": {"username": username, "password": password, "nickname": nickname}}
+
     try:
         db_update_user(user_collection, current_user, update_cmd)
         return {"status": 202, "msg": "txn was executed well."}

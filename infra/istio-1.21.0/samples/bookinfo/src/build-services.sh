@@ -40,4 +40,3 @@ if [[ "${BOOKINFO_UPDATE}" == "true" ]]; then
 # Update image references in the yaml files
   find ./samples/bookinfo/platform -name "*bookinfo*.yaml" -exec sed -i.bak "s#image:.*\\(\\/examples-bookinfo-.*\\):.*#image: ${h//\//\\/}\\1:$t#g" {} +
 fi
-

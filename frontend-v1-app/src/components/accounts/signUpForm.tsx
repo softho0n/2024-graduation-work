@@ -157,8 +157,8 @@ const signUpForm = () => {
       try {
         alert("잠시만 기다려주세요!");
         const response = await Axios.post(
-          "http://localhost:8000/user/signup/",
-          // "/api/user/signup",
+          // "http://localhost:8000/user/signup/",
+          "/api/user/signup",
           data
         );
         alert("회원가입 성공!");

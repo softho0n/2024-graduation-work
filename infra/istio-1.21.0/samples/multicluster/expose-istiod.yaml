@@ -51,4 +51,3 @@ spec:
         host: istiod.istio-system.svc.cluster.local
         port:
           number: 443
-
