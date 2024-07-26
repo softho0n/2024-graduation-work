@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 from typing import List, Union
 
@@ -15,15 +16,24 @@ from jose import JWTError, jwt
 from models import LoginRequest, SignUpRequest, Token, TokenRequest
 from passlib.context import CryptContext
 from pymongo import MongoClient
+from settings import DevSettings, ProdSettings
 from typing_extensions import Annotated
-from utils import create_access_token, get_password_hash, verify_password
+from utils import create_access_token, get_password_hash, get_settings, verify_password
 
+settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI()
 
+env = os.getenv('ENVIRONMENT', 'dev')
+if env == "dev":
+    client = MongoClient()
+else:
+    client = MongoClient(host=settings.MONGO_DB_HOST, port=settings.MONGO_DB_PORT, username=settings.MONGO_DB_USERNAME, password=settings.MONGO_DB_PASSWORD)
+    
+
 # client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
-client = MongoClient()
+# client = MongoClient()
 db = client.test_database
 user_collection = db.users
 
@@ -161,7 +171,3 @@ async def update_profile(request: SignUpRequest):
             detail="Something Wrong.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-        
-    
-    
-    
