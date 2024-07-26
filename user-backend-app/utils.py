@@ -1,9 +1,18 @@
+import os
 from datetime import datetime, timedelta, timezone
 from typing import Union
 
 from const import ALGORITHM, SECRET_KEY
 from jose import jwt
+from settings import DevSettings, ProdSettings
 
+
+def get_settings():
+    env = os.getenv('ENVIRONMENT', 'dev')
+    if env == 'prod':
+        return ProdSettings()
+    else:
+        return DevSettings()
 
 def verify_password(pwd_context, plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
