@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime, timedelta, timezone
 from typing import List, Union
 
@@ -23,16 +24,22 @@ from typing_extensions import Annotated
 from utils import (
     create_access_token,
     get_password_hash,
+    get_settings,
     validate_token,
     verify_password,
 )
 
+settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI()
 
-# client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
-client = MongoClient()
+env = os.getenv('ENVIRONMENT', 'dev')
+if env == "dev":
+    client = MongoClient()
+else:
+    client = MongoClient(host=settings.MONGO_DB_HOST, port=settings.MONGO_DB_PORT, username=settings.MONGO_DB_USERNAME, password=settings.MONGO_DB_PASSWORD)
+    
 db = client.test_database
 user_collection = db.charge
 
@@ -50,7 +57,7 @@ app.add_middleware(
 
 @app.post("/payments/charge")
 def charge_money(request: ChargeRequest):
-    username = validate_token(request.access_token)
+    username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
     
     if username:
         if db_get_user(user_collection, username) is None:
@@ -67,7 +74,7 @@ def charge_money(request: ChargeRequest):
         
 @app.post("/payments/get_money")
 def get_money(request: TokenRequest):
-    username = validate_token(request.access_token)
+    username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
     
     if username:
         current_user = db_get_user(user_collection, username)
