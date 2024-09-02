@@ -27,7 +27,7 @@ app = FastAPI()
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
-    client = MongoClient()
+    client = MongoClient(directConnection=True, host=settings.MONGO_DB_HOST, port=27017)
 else:
     client = MongoClient(
         host=settings.MONGO_DB_HOST,
@@ -37,8 +37,6 @@ else:
     )
 
 
-# client = MongoClient(host="mongo-svc", port=27017, username="adminuser", password="password123")
-# client = MongoClient()
 db = client.test_database
 user_collection = db.users
 

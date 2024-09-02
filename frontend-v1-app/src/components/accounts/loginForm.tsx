@@ -24,8 +24,9 @@ const loginForm = () => {
       try {
         alert("잠시만 기다려주세요!");
         const response = await Axios.post(
-          "http://localhost:8000/user/login/",
+          // "http://localhost:8000/user/login/",
           // "/api/user/login",
+          `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/login/`,
           data
         );
         const {
