@@ -19,7 +19,8 @@ const profileForm = () => {
           access_token: token,
         };
         const response = await Axios.post(
-          "http://localhost:8000/user/profile/",
+          // "http://localhost:8000/user/profile/",
+          `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/profile/`,
           //   "/api/user/profile",
           data
         );
@@ -33,7 +34,8 @@ const profileForm = () => {
         setNickname(nickname);
 
         const charge_response = await Axios.post(
-          "http://localhost:8001/payments/get_money/",
+          // "http://localhost:8001/payments/get_money/",
+          `${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/get_money/`,
           //   "/api/payments/get_money",
           data
         );
@@ -62,7 +64,8 @@ const profileForm = () => {
       try {
         const response = await Axios.post(
           //   "http://localhost:8000/user/update_profile/",
-          "/api/user/update_profile",
+          // "/api/user/update_profile",
+          `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/update_profile/`,
           data
         );
         alert("프로필이 업데이트 되었습니다.");

@@ -157,13 +157,15 @@ const signUpForm = () => {
       try {
         alert("잠시만 기다려주세요!");
         const response = await Axios.post(
-          // "http://localhost:8000/user/signup/",
-          "/api/user/signup",
+          // "http://127.0.0.1:8000/user/signup/",
+          // "/api/user/signup",
+          `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/signup/`,
           data
         );
         alert("회원가입 성공!");
         router.push("/accounts/login");
       } catch (error) {
+        alert(`${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/signup/`);
         alert("에러 발생, 잠시 후 다시 시도해주세요.");
         alert(error);
       }

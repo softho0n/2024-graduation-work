@@ -45,11 +45,14 @@ const chargeForm = () => {
         access_token: token,
         money_amount: money,
       };
+      // alert("asdf");
+      alert(`${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`);
       try {
         const response = await Axios.post(
           // "http://localhost:8000/user/update_profile/",
           // "http://localhost:8001/payments/charge",
-          "/api/payments/charge",
+          // "/api/payments/charge",
+          `${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`,
           data
         );
         alert("정상적으로 충전되었습니다.");
