@@ -7,6 +7,8 @@ const musicListView = () => {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [money, setMoney] = useState("");
+
+  const [musics, setMusics] = useState([]);
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     // document.cookie = `token=${token}`;
@@ -16,26 +18,17 @@ const musicListView = () => {
           access_token: token,
         };
         const response = await Axios.post(
-          "http://localhost:8000/user/profile/",
+          `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/get_musics/`,
           data
         );
-        console.log(response);
-        const {
-          data: { username, password, nickname },
-        } = response;
 
-        setUsername(username);
-        setPassword(password);
-        setNickname(nickname);
-
-        // setEmail(email);
-        // setUsername(userName);
-        // setCampus(campus);
+        const { data: results } = response;
+        setMusics(results);
       } catch (error) {
         alert(error);
       }
     }
-    // fn();
+    fn();
   }, []);
 
   const handleSubmit = () => {
@@ -73,116 +66,18 @@ const musicListView = () => {
   return (
     <F.AuthWrapper desc="음원 다운로드를 위한 머니 충전하기">
       <F.verticalWrapper>
-        {/* <F.InputWithLabel
-          label="충전금액"
-          // type="password"
-          name="money"
-          // value={password}
-          placeholder="충전 금액을 입력 해주세요.   ex) 5000"
-          onChange={handleChange}
-        /> */}
-        {/* <div>
-          <ol>
-            <li draggable="true">Item 1</li>
-            <li draggable="true">Item 1</li>
-            <li draggable="true">Item 1</li>
-          </ol>
-        </div> */}
         <F.ListViewWrapper>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
-          <F.MusicElement
-            imgUrl="/img.png"
-            title="Back To Me"
-            artist="Kanye West"
-            label="test"
-          ></F.MusicElement>
+          {musics.map((result, index) => (
+            <F.MusicElement
+              key={index}
+              imgUrl="/img.png"
+              title={result.title}
+              artist={result.artist}
+              label={result.label}
+            />
+          ))}
         </F.ListViewWrapper>
       </F.verticalWrapper>
-
-      {/* <F.AuthButton onClick={handleSubmit}>충전하기</F.AuthButton> */}
     </F.AuthWrapper>
   );
 };

@@ -34,9 +34,7 @@ const profileForm = () => {
         setNickname(nickname);
 
         const charge_response = await Axios.post(
-          // "http://localhost:8001/payments/get_money/",
           `${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/get_money/`,
-          //   "/api/payments/get_money",
           data
         );
         const {
