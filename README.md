@@ -7,7 +7,7 @@
 * ~~Frontend Service - version1 (For Canary Deploy)~~
 * Frontend Service - version2 (For Canary Deploy)
 * ~~Payments Service~~
-* Backoffice Service (For Polyglot Programming)
+* ~~Backoffice Service (For Polyglot Programming)~~
 * Search Service
 * Download Service
 * Audio Streaming Service (Healthy - For Circuit Breaking)
