@@ -1,6 +1,8 @@
 import Layout from "@/components/layout/layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import MusicListView from "@/components/musicListView";
+
 const Home = () => {
   const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -12,7 +14,8 @@ const Home = () => {
   }, []);
   return (
     <Layout homeNum>
-      <p>API URL: {apiUrl}</p>
+      {/* <p>API URL: {apiUrl}</p> */}
+      <MusicListView></MusicListView>
     </Layout>
   );
 };

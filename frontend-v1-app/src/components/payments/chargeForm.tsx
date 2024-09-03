@@ -46,7 +46,7 @@ const chargeForm = () => {
         money_amount: money,
       };
       // alert("asdf");
-      alert(`${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`);
+      // alert(`${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`);
       try {
         const response = await Axios.post(
           // "http://localhost:8000/user/update_profile/",
