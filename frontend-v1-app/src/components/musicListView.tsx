@@ -2,6 +2,23 @@
 import { use, useEffect, useRef, useState } from "react";
 import * as F from "./musicListView.styled";
 import Axios from "axios";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const musicListView = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +39,21 @@ const musicListView = () => {
           data
         );
 
+        const subscription_response = await Axios.post(
+          `${process.env.NEXT_PUBLIC_SUBSCRIPTION_BACKEND_URL_PREFIX}/get_like_musics/`,
+          data
+        );
+
         const { data: results } = response;
-        setMusics(results);
+        const { data: likeMusics } = subscription_response;
+
+        const updatedResults = results.map((result) => ({
+          ...result,
+          like: likeMusics.includes(result.title), // likeMusics에 title이 포함되면 true, 아니면 false
+        }));
+
+        // console.log(updatedResults);
+        setMusics(updatedResults);
       } catch (error) {
         alert(error);
       }
@@ -55,13 +85,44 @@ const musicListView = () => {
     }
     fn();
   };
+  const handleTest = (likeValue, musicTitle, index) => {
+    const token = localStorage.getItem("jwtToken");
+    const data = {
+      access_token: token,
+      music_title: musicTitle,
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "money") {
-      setMoney(value);
+    setMusics((prevMusics) => {
+      const updatedMusics = prevMusics.map((music, idx) =>
+        idx === index ? { ...music, like: !music.like } : music
+      );
+      return updatedMusics;
+    });
+
+    try {
+      var apiUrl = "";
+      if (likeValue === true) {
+        apiUrl = `${process.env.NEXT_PUBLIC_SUBSCRIPTION_BACKEND_URL_PREFIX}/unlike/`;
+      } else {
+        apiUrl = `${process.env.NEXT_PUBLIC_SUBSCRIPTION_BACKEND_URL_PREFIX}/like/`;
+      }
+
+      const response = Axios.post(apiUrl, data);
+    } catch (error) {
+      alert(error);
     }
   };
+
+  const [open, setOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [modalLyrics, setModelLyrics] = useState("");
+  const handleOpen = (title, lyrics) => {
+    setModalContent(title);
+    setModelLyrics(lyrics);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
 
   return (
     <F.AuthWrapper desc="음원 다운로드를 위한 머니 충전하기">
@@ -74,10 +135,31 @@ const musicListView = () => {
               title={result.title}
               artist={result.artist}
               label={result.label}
+              like={result.like}
+              isDownloaded={result.isDownloaded}
+              onClickHeart={handleTest}
+              onClickLyrics={() => handleOpen(result.title, result.lyrics)}
+              index={index}
             />
           ))}
         </F.ListViewWrapper>
       </F.verticalWrapper>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {modalContent}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {modalLyrics}
+          </Typography>
+        </Box>
+      </Modal>
     </F.AuthWrapper>
   );
 };
