@@ -319,7 +319,18 @@ export const Dummy = styled.div`
   gap: 0.4rem;
 `;
 
-export const MusicElement = ({ imgUrl, title, artist, label, ...rest }) => (
+export const MusicElement = ({
+  imgUrl,
+  title,
+  artist,
+  label,
+  like,
+  isDownloaded,
+  onClickHeart,
+  onClickLyrics,
+  index,
+  ...rest
+}) => (
   <LiWrapper>
     <MusicElementLeftSide>
       <ImgWrapper>
@@ -335,13 +346,24 @@ export const MusicElement = ({ imgUrl, title, artist, label, ...rest }) => (
         <ThumbnailImg src="/play.png"></ThumbnailImg>
       </IconImgWrapper>
       <IconImgWrapper>
-        <ThumbnailImg src="/blankheart.png"></ThumbnailImg>
+        <ThumbnailImg
+          src={like ? "/heart.png" : "/blankheart.png"}
+          alt="Like Icon"
+          onClick={() => {
+            onClickHeart(like, title, index);
+          }}
+        />
       </IconImgWrapper>
       <IconImgWrapper>
         <ThumbnailImg src="/download.png"></ThumbnailImg>
       </IconImgWrapper>
       <IconImgWrapper>
-        <ThumbnailImg src="/lyrics.png"></ThumbnailImg>
+        <ThumbnailImg
+          src="/lyrics.png"
+          onClick={() => {
+            onClickLyrics();
+          }}
+        ></ThumbnailImg>
       </IconImgWrapper>
     </MusicElementRightSide>
   </LiWrapper>
