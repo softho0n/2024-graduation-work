@@ -13,4 +13,4 @@
 * Audio Streaming Service (Healthy - For Circuit Breaking)
 * Audio Streaming Service (Risky - For Circuit Breaking)
 * Audio Storage Service
-* Subscription Service
+* ~~Subscription Service~~
