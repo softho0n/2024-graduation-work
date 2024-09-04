@@ -30,6 +30,8 @@ if __name__ == "__main__":
             "title": music_title,
             "artist": artist,
             "lyrics": lyrics,
+            "like": False,
+            "isDownloaded": False
         }
 
         iid = music_collection.insert_one(new_song).inserted_id
