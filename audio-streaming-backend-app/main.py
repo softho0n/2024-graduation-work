@@ -5,9 +5,7 @@ from typing import List, Union
 
 import requests
 from const import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
-from crud import (  # add_chat,; db_add_friend,; db_get_friend_info,; db_update_user,; get_chat,
-    db_get_musics,
-)
+from crud import db_get_musics  # add_chat,; db_add_friend,; db_get_friend_info,; db_update_user,; get_chat,
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -16,13 +14,7 @@ from models import ChargeRequest, LoginRequest, SignUpRequest, Token, TokenReque
 from passlib.context import CryptContext
 from pymongo import MongoClient
 from typing_extensions import Annotated
-from utils import (
-    create_access_token,
-    get_password_hash,
-    get_settings,
-    validate_token,
-    verify_password,
-)
+from utils import create_access_token, get_password_hash, get_settings, validate_token, verify_password
 
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
