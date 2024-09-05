@@ -1,27 +1,19 @@
-import json
 import os
-from datetime import datetime, timedelta, timezone
-from typing import List, Union
 
-import requests
 from const import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
 from crud import (  # add_chat,; db_add_friend,; db_get_friend_info,; db_update_user,; get_chat,
     db_charge_money,
     db_create_new_user,
     db_get_user,
-    db_get_user_by_nickname,
-    db_get_user_by_username,
-    db_update_user,
 )
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-from models import ChargeRequest, LoginRequest, SignUpRequest, Token, TokenRequest
+from fastapi.security import OAuth2PasswordBearer
+from models import ChargeRequest, TokenRequest
 from passlib.context import CryptContext
 from pymongo import MongoClient
 from typing_extensions import Annotated
-from utils import create_access_token, get_password_hash, get_settings, validate_token, verify_password
+from utils import get_settings, validate_token
 
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
