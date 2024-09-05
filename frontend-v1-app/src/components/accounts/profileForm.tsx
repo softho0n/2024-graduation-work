@@ -19,9 +19,7 @@ const profileForm = () => {
           access_token: token,
         };
         const response = await Axios.post(
-          // "http://localhost:8000/user/profile/",
           `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/profile/`,
-          //   "/api/user/profile",
           data
         );
         console.log(response);
@@ -42,9 +40,6 @@ const profileForm = () => {
         } = charge_response;
 
         setMoney(money);
-        // setEmail(email);
-        // setUsername(userName);
-        // setCampus(campus);
       } catch (error) {
         router.push("/accounts/login");
       }
@@ -61,8 +56,6 @@ const profileForm = () => {
       };
       try {
         const response = await Axios.post(
-          //   "http://localhost:8000/user/update_profile/",
-          // "/api/user/update_profile",
           `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/update_profile/`,
           data
         );

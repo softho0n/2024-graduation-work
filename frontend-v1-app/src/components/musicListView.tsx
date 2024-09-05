@@ -1,9 +1,7 @@
-// Todo: AppLayout 수정 필요
 import { use, useEffect, useRef, useState } from "react";
 import * as F from "./musicListView.styled";
 import Axios from "axios";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
@@ -24,11 +22,10 @@ const musicListView = () => {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [money, setMoney] = useState("");
-
   const [musics, setMusics] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
-    // document.cookie = `token=${token}`;
     async function fn() {
       try {
         const data = {
@@ -52,7 +49,6 @@ const musicListView = () => {
           like: likeMusics.includes(result.title), // likeMusics에 title이 포함되면 true, 아니면 false
         }));
 
-        // console.log(updatedResults);
         setMusics(updatedResults);
       } catch (error) {
         alert(error);
@@ -68,23 +64,18 @@ const musicListView = () => {
         access_token: token,
         money_amount: money,
       };
-      // alert("asdf");
-      // alert(`${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`);
       try {
         const response = await Axios.post(
-          // "http://localhost:8000/user/update_profile/",
-          // "http://localhost:8001/payments/charge",
-          // "/api/payments/charge",
           `${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`,
           data
         );
-        alert("정상적으로 충전되었습니다.");
       } catch (error) {
         alert(error);
       }
     }
     fn();
   };
+
   const handleTest = (likeValue, musicTitle, index) => {
     const token = localStorage.getItem("jwtToken");
     const data = {

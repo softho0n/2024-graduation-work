@@ -5,10 +5,6 @@ export const TestBox = styled.div`
   width: 100px;
 `;
 
-// export const TestBox = styled.div`
-//   font-size:
-// `
-
 export const TestButton = styled.div`
   font-size: 30px;
 `;

@@ -44,13 +44,6 @@ export const ListWrapper = styled.div`
   width: 100%;
 `;
 
-// export const OlWrapper = styled.ol`
-//   width: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-// `;
-
 export const OlWrapper = styled.ol`
   width: 100%;
   display: flex;
