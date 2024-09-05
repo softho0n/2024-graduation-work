@@ -12,3 +12,7 @@ def db_get_musics(music_collection):
     ]
 
     return music_list
+
+
+def db_get_music_file_uri(music_collection, music_title):
+    pass
