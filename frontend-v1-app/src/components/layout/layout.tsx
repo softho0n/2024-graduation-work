@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import * as S from "./layout.styled";
 
-// Todo: AppLayout 수정 필요
 const layout = ({ children, homeNum, loginPage, signUpPage }) => {
   const router = useRouter();
   return (

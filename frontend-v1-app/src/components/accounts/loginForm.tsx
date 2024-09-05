@@ -24,8 +24,6 @@ const loginForm = () => {
       try {
         alert("잠시만 기다려주세요!");
         const response = await Axios.post(
-          // "http://localhost:8000/user/login/",
-          // "/api/user/login",
           `${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/login/`,
           data
         );
@@ -56,9 +54,6 @@ const loginForm = () => {
         name="password"
         onChange={handleChange}
       ></S.InputWithLabel>
-      {/* <S.RightAlignedLink onClick={() => router.push("/accounts/find")}>
-        아이디/비밀번호 찾기
-      </S.RightAlignedLink> */}
       <S.AuthButton id="login_btn" onClick={handleLogin}>
         로그인
       </S.AuthButton>

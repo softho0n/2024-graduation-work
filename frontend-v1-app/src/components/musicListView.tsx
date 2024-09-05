@@ -1,9 +1,7 @@
-// Todo: AppLayout 수정 필요
 import { use, useEffect, useRef, useState } from "react";
 import * as F from "./musicListView.styled";
 import Axios from "axios";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
@@ -20,15 +18,12 @@ const style = {
 };
 
 const musicListView = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
   const [money, setMoney] = useState("");
-
   const [musics, setMusics] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
-    // document.cookie = `token=${token}`;
     async function fn() {
       try {
         const data = {
@@ -52,7 +47,6 @@ const musicListView = () => {
           like: likeMusics.includes(result.title), // likeMusics에 title이 포함되면 true, 아니면 false
         }));
 
-        // console.log(updatedResults);
         setMusics(updatedResults);
       } catch (error) {
         alert(error);
@@ -68,23 +62,22 @@ const musicListView = () => {
         access_token: token,
         money_amount: money,
       };
-      // alert("asdf");
-      // alert(`${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`);
       try {
         const response = await Axios.post(
-          // "http://localhost:8000/user/update_profile/",
-          // "http://localhost:8001/payments/charge",
-          // "/api/payments/charge",
           `${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`,
           data
         );
-        alert("정상적으로 충전되었습니다.");
       } catch (error) {
         alert(error);
       }
     }
     fn();
   };
+
+  const handlePlay = (musicTitle) => {
+    alert(musicTitle);
+  };
+
   const handleTest = (likeValue, musicTitle, index) => {
     const token = localStorage.getItem("jwtToken");
     const data = {
@@ -117,9 +110,19 @@ const musicListView = () => {
   const [modalContent, setModalContent] = useState("");
   const [modalLyrics, setModelLyrics] = useState("");
   const handleOpen = (title, lyrics) => {
-    setModalContent(title);
-    setModelLyrics(lyrics);
-    setOpen(true);
+    async function fn() {
+      try {
+        setAudioUrl(
+          `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/play_music/${title}`
+        );
+        setModalContent(title);
+        setModelLyrics(lyrics);
+        setOpen(true);
+      } catch (error) {
+        alert(error);
+      }
+    }
+    fn();
   };
 
   const handleClose = () => setOpen(false);
@@ -139,6 +142,7 @@ const musicListView = () => {
               isDownloaded={result.isDownloaded}
               onClickHeart={handleTest}
               onClickLyrics={() => handleOpen(result.title, result.lyrics)}
+              onClickPlay={() => handleOpen(result.title, result.lyrics)}
               index={index}
             />
           ))}
@@ -152,8 +156,19 @@ const musicListView = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{ mb: 2 }}
+          >
             {modalContent}
+          </Typography>
+          <audio controls autoPlay>
+            <source src={audioUrl} type="audio/mpeg" />
+          </audio>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Lyrics
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {modalLyrics}

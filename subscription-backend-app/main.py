@@ -14,24 +14,11 @@ from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from models import (
-    ChargeRequest,
-    LoginRequest,
-    SignUpRequest,
-    SubscriptionRequest,
-    Token,
-    TokenRequest,
-)
+from models import ChargeRequest, LoginRequest, SignUpRequest, SubscriptionRequest, Token, TokenRequest
 from passlib.context import CryptContext
 from pymongo import MongoClient
 from typing_extensions import Annotated
-from utils import (
-    create_access_token,
-    get_password_hash,
-    get_settings,
-    validate_token,
-    verify_password,
-)
+from utils import create_access_token, get_password_hash, get_settings, validate_token, verify_password
 
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -68,11 +55,12 @@ app.add_middleware(
 @app.post("/subscription/get_like_musics")
 def get_like_musics(request: TokenRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
-    
+
     if username:
         return db_get_all_like_musics(subscription_collection, username)
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
+
 
 @app.post("/subscription/like")
 def like_music(request: SubscriptionRequest):
@@ -82,8 +70,8 @@ def like_music(request: SubscriptionRequest):
         db_add_like_music(subscription_collection, username, request.music_title)
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
- 
- 
+
+
 @app.post("/subscription/unlike")
 def unlike_music(request: SubscriptionRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
@@ -91,5 +79,3 @@ def unlike_music(request: SubscriptionRequest):
         db_delete_like_music(subscription_collection, username, request.music_title)
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
- 
-    
