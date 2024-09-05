@@ -1,6 +1,3 @@
-import io
-import os
-
 import streamlit as st
 from PIL import Image
 from pymongo import MongoClient
@@ -26,13 +23,7 @@ if __name__ == "__main__":
     audio = st.file_uploader("Upload Audio", accept_multiple_files=False)
 
     if st.button("Save to Server"):
-        new_song = {
-            "title": music_title,
-            "artist": artist,
-            "lyrics": lyrics,
-            "like": False,
-            "isDownloaded": False
-        }
+        new_song = {"title": music_title, "artist": artist, "lyrics": lyrics, "like": False, "isDownloaded": False}
 
         iid = music_collection.insert_one(new_song).inserted_id
         print(iid)
