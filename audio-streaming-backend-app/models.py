@@ -15,6 +15,11 @@ class TokenRequest(BaseModel):
     access_token: str
 
 
+class MusicRequest(BaseModel):
+    access_token: str
+    music_title: str
+
+
 class LoginRequest(BaseModel):
     username: str
     password: str

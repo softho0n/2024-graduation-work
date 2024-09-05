@@ -1,9 +1,9 @@
 user-backend-app/__pycache__/
-user-backend-app/**/__pycache__/
-payments-backend-app/**/__pycache__/
+# user-backend-app/**/__pycache__/
+# payments-backend-app/**/__pycache__/
 payments-backend-app/__pycache__/
-subscription-backend-app/**/__pycache__/
+# subscription-backend-app/**/__pycache__/
 subscription-backend-app/__pycache__/
-audio-streaming-backend-app/**/__pycache__/
+# audio-streaming-backend-app/**/__pycache__/*
 audio-streaming-backend-app/__pycache__/
 .DS_Store

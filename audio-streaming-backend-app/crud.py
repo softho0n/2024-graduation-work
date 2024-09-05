@@ -6,9 +6,13 @@ def db_get_musics(music_collection):
             "artist": doc["artist"],
             "lyrics": doc["lyrics"],
             "like": doc["like"],
-            "isDownloaded": doc["isDownloaded"]
+            "isDownloaded": doc["isDownloaded"],
         }
         for doc in music_cursor
     ]
 
     return music_list
+
+
+def db_get_music_file_uri(music_collection, music_title):
+    pass
