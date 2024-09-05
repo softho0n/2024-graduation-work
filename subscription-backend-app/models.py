@@ -5,9 +5,11 @@ class ChargeRequest(BaseModel):
     access_token: str
     money_amount: str
 
+
 class SubscriptionRequest(BaseModel):
     access_token: str
     music_title: str
+
 
 class Token(BaseModel):
     access_token: str

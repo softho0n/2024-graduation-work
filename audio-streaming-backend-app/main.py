@@ -57,10 +57,11 @@ def get_musics(request: TokenRequest):
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
 
+
 @app.get("/audio-streaming/play_music")
 def play_music(request: MusicRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
-    
+
     if username:
         # TODO : db_get_music_file_uri를 통해 DB에 저장되어있는 음원 파일의 uri를 얻어온다.
         music_file_uri = db_get_music_file_uri(music_collection, request.music_title)
