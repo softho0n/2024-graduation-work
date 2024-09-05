@@ -262,7 +262,7 @@ export const MusicElementLeftSide = styled.div`
 
 export const MusicElementRightSide = styled.div`
   display: flex;
-  width: 20%;
+  width: 15%;
   align-items: center; /* 수직 중앙 정렬 */
   height: 100%;
   justify-content: space-between;
@@ -321,6 +321,7 @@ export const MusicElement = ({
   isDownloaded,
   onClickHeart,
   onClickLyrics,
+  onClickPlay,
   index,
   ...rest
 }) => (
@@ -336,7 +337,12 @@ export const MusicElement = ({
     </MusicElementLeftSide>
     <MusicElementRightSide>
       <IconImgWrapper>
-        <ThumbnailImg src="/play.png"></ThumbnailImg>
+        <ThumbnailImg
+          src="/play.png"
+          onClick={() => {
+            onClickPlay(title);
+          }}
+        ></ThumbnailImg>
       </IconImgWrapper>
       <IconImgWrapper>
         <ThumbnailImg
@@ -346,18 +352,19 @@ export const MusicElement = ({
             onClickHeart(like, title, index);
           }}
         />
+        {/* <audio ref={audioRef} src={audioSrc} /> */}
       </IconImgWrapper>
       <IconImgWrapper>
         <ThumbnailImg src="/download.png"></ThumbnailImg>
       </IconImgWrapper>
-      <IconImgWrapper>
+      {/* <IconImgWrapper>
         <ThumbnailImg
           src="/lyrics.png"
           onClick={() => {
             onClickLyrics();
           }}
         ></ThumbnailImg>
-      </IconImgWrapper>
+      </IconImgWrapper> */}
     </MusicElementRightSide>
   </LiWrapper>
 );
