@@ -54,8 +54,11 @@ if __name__ == "__main__":
             thumbnail_img_url = upload_file(bucket, thumbnail_img, f"thumbnail/{thumbnail_img.name}")
         if audio is not None:
             audio_url = upload_file(bucket, audio, f"music/{audio.name}")
+        
+        img_name = thumbnail_img_url.split("thumbnail/")[-1]
+        audio_name = audio_url.split("music/")[-1]
 
-        new_song = {"title": music_title, "artist": artist, "lyrics": lyrics, "like": False, "isDownloaded": False, "imgUrl" : thumbnail_img_url, "audioUrl" : audio_url}
+        new_song = {"title": music_title, "artist": artist, "lyrics": lyrics, "like": False, "isDownloaded": False, "imgUrl" : img_name, "audioUrl" : audio_name}
         iid = music_collection.insert_one(new_song).inserted_id
         print(iid)
 
