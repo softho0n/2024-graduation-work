@@ -8,5 +8,7 @@ subscription-backend-app/__pycache__/
 audio-streaming-backend-app/__pycache__/
 # audio-streaming-backend-app/**/__pycache__/*
 audio-storage-backend-app/__pycache__/
+# GCP Service Key
+*/graduation-work-*.json
 graduation-work-*.json
 .DS_Store
