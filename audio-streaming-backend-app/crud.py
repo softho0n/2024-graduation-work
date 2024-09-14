@@ -15,4 +15,7 @@ def db_get_musics(music_collection):
 
 
 def db_get_music_file_uri(music_collection, music_title):
-    pass
+    music_cursor = music_collection.find({"title":music_title})
+    music_file_uri = music_cursor[0]["audioUri"]
+    
+    return music_file_uri
