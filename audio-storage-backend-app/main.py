@@ -12,16 +12,36 @@ app = FastAPI()
 settings = get_settings()
 env = os.getenv("ENVIRONMENT", "dev")
 
-bucket_name = settings.BUCKET_NAME
-
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./graduation-work-434713-2fc06a1d16e0.json"
 storage_client = storage.Client()
-bucket = storage_client.bucket(bucket_name)
 
-@app.get("/audio-storage/get_music/{music_url}")
-async def get_music(music_url: str):
+
+def parse_image(img_uri: str):
+    content = img_uri.split("googleapis.com/")[-1]
+    image_name = content.split("/")[-1]
+
+    return image_name
+
+def parse_bucket(music_uri: str):
+    content = music_uri.split("googleapis.com/")[-1]
+    bucket_name = content.split("/")[0]
+
+    return bucket_name
+
+def parse_music(music_uri: str):
+    content = music_uri.split("googleapis.com/")[-1]
+    music_name = content.split("/")[-1]
+
+    return music_name
+
+@app.get("/audio-storage/get_music/{music_uri:path}")
+async def get_music(music_uri: str):
     try:
-        blob = bucket.blob(f"music/{music_url}")
+        print(music_uri)
+        bucket_name = parse_bucket(music_uri)
+        music_name = parse_music(music_uri)
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(f"music/{music_name}")
 
         if not blob.exists():
             raise HTTPException(status_code=404, detail="File not found")
@@ -35,35 +55,36 @@ async def get_music(music_url: str):
         return Response(
             content=content,
             media_type=media_type,
-            headers={"Content-Disposition": f"attachment; filename={music_url}"}
+            headers={"Content-Disposition": f"attachment; filename={music_name}"}
         )
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
-"""
-@app.get("/audio-storage/get_thumbnail/{thumbnail_url}")
-async def get_music(thumbnail_url: str):
-    try:
-        decoded_image_name = unquote(thumbnail_url)
-        print(decoded_image_name)
-        blob = bucket.blob(f"thumbnail/{thumbnail_url}")
 
+@app.get("/audio-storage/get_thumbnail/{thumbnail_uri:path}")
+async def get_image(thumbnail_uri: str):
+    try:
+        print(thumbnail_uri)
+        bucket_name = parse_bucket(thumbnail_uri)
+        image_name = parse_image(thumbnail_uri)
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(f"thumbnail/{image_name}")
+        
         if not blob.exists():
             raise HTTPException(status_code=404, detail="File not found")
 
         # 파일 내용을 바이트로 다운로드
         content = blob.download_as_bytes()
+        # 파일 MIME 타입 설정 (여기서는 예시로 'image/jpg'를 사용)
         
-        # 파일 MIME 타입 설정 (여기서는 예시로 'audio/mpeg'를 사용)
-        media_type = "image/jpg"
+        media_type = "image/jpeg"
         
         return Response(
             content=content,
             media_type=media_type,
-            headers={"Content-Disposition": f"attachment; filename={decoded_image_name}"}
+            headers={"Content-Disposition": f"attachment; filename={image_name}"}
         )
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-"""
