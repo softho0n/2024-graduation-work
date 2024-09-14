@@ -11,8 +11,6 @@ def upload_file(bucket, file, file_name):
     blob.upload_from_file(file)
     print(blob.public_url)
     return blob.public_url
-    
-    
 
 if __name__ == "__main__":
     bucket_name = '2024-graduation-music'
@@ -45,20 +43,17 @@ if __name__ == "__main__":
 
     audio = st.file_uploader("Upload Audio", accept_multiple_files=False)
 
-    # BackOffice -> GCP Bucket -> Url -> MongoDB
+    # BackOffice -> GCP Bucket -> Uri -> MongoDB
     # audioUrl: 'https://storage.googleapis.com/<bucket_name>/<file_name>'
     if st.button("Save to Server"):
-        thumbnail_img_url = ""
-        audio_url = ""
+        img_uri = ""
+        audio_uri = ""
         if thumbnail_img is not None:
-            thumbnail_img_url = upload_file(bucket, thumbnail_img, f"thumbnail/{thumbnail_img.name}")
+            img_uri = upload_file(bucket, thumbnail_img, f"thumbnail/{thumbnail_img.name}")
         if audio is not None:
-            audio_url = upload_file(bucket, audio, f"music/{audio.name}")
+            audio_uri = upload_file(bucket, audio, f"music/{audio.name}")
         
-        img_name = thumbnail_img_url.split("thumbnail/")[-1]
-        audio_name = audio_url.split("music/")[-1]
-
-        new_song = {"title": music_title, "artist": artist, "lyrics": lyrics, "like": False, "isDownloaded": False, "imgUrl" : img_name, "audioUrl" : audio_name}
+        new_song = {"title": music_title, "artist": artist, "lyrics": lyrics, "like": False, "isDownloaded": False, "imgUri" : img_uri, "audioUri" : audio_uri}
         iid = music_collection.insert_one(new_song).inserted_id
         print(iid)
 
