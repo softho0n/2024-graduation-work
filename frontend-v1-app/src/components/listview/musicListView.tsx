@@ -33,6 +33,9 @@ const musicListView = () => {
           `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/get_musics/`,
           data
         );
+        alert(
+          `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/get_musics/`
+        );
 
         const subscription_response = await Axios.post(
           `${process.env.NEXT_PUBLIC_SUBSCRIPTION_BACKEND_URL_PREFIX}/get_like_musics/`,
@@ -43,10 +46,9 @@ const musicListView = () => {
         const { data: likeMusics } = subscription_response;
         const updatedResults = results.map((result) => ({
           ...result,
-          like: likeMusics.includes(result.title), // likeMusics에 title이 포함되면 true, 아니면 false
+          like: likeMusics ? likeMusics.includes(result.title) : false,
         }));
 
-        // alert(updatedResults[0].imgUrl);
         setMusics(updatedResults);
       } catch (error) {
         alert(error);

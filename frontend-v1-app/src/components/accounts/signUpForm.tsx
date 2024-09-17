@@ -72,12 +72,6 @@ const signUpForm = () => {
         name="password"
         onChange={handleChange}
       />
-      F.InputWithLabel
-        label="닉네임 입력"
-        type="text"
-        name="name"
-        onChange={handleChange}
-      />
       <F.AuthButton id="signup_btn" onClick={handleSubmit}>
         회원가입
       </F.AuthButton>
