@@ -3,3 +3,4 @@ pytz
 requests
 streamlit
 streamlit-autorefresh
+google-cloud-storage
