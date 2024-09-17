@@ -1,4 +1,5 @@
 fastapi[all]
+google-cloud-storage
 passlib[bcrypt]
 pymongo
 python-jose[cryptography]
