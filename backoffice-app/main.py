@@ -22,6 +22,7 @@ if __name__ == "__main__":
         client = MongoClient(directConnection=True, host=os.getenv("MONGO_DB_HOST"), port=27017)
     elif "prod" in sys.argv:
         load_dotenv("./config/.env.prod")
+        print("This is prod")
         client = MongoClient(host=os.getenv("MONGO_DB_HOST"), port=int(os.getenv("MONGO_DB_PORT")), username=os.getenv("MONGO_DB_USERNAME"), password=os.getenv("MONGO_DB_PASSWORD"))
     else:
         raise ValueError("Please specify the environment as 'dev' or 'prod'.")
