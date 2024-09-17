@@ -6,6 +6,7 @@ def db_get_musics(music_collection):
             "artist": doc["artist"],
             "lyrics": doc["lyrics"],
             "like": doc["like"],
+            "img_uri": doc["imgUri"],
             "isDownloaded": doc["isDownloaded"],
         }
         for doc in music_cursor
@@ -15,7 +16,7 @@ def db_get_musics(music_collection):
 
 
 def db_get_music_file_uri(music_collection, music_title):
-    music_cursor = music_collection.find({"title":music_title})
+    music_cursor = music_collection.find({"title": music_title})
     music_file_uri = music_cursor[0]["audioUri"]
-    
+
     return music_file_uri
