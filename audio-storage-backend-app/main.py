@@ -13,7 +13,6 @@ app = FastAPI()
 settings = get_settings()
 env = os.getenv("ENVIRONMENT", "dev")
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./graduation-work-434713-2fc06a1d16e0.json"
 storage_client = storage.Client()
 
 
