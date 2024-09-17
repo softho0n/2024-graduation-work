@@ -41,12 +41,12 @@ const musicListView = () => {
 
         const { data: results } = response;
         const { data: likeMusics } = subscription_response;
-
         const updatedResults = results.map((result) => ({
           ...result,
           like: likeMusics.includes(result.title), // likeMusics에 title이 포함되면 true, 아니면 false
         }));
 
+        // alert(updatedResults[0].imgUrl);
         setMusics(updatedResults);
       } catch (error) {
         alert(error);
@@ -134,7 +134,7 @@ const musicListView = () => {
           {musics.map((result, index) => (
             <F.MusicElement
               key={index}
-              imgUrl="/img.png"
+              imgUrl={result.img_uri}
               title={result.title}
               artist={result.artist}
               label={result.label}
