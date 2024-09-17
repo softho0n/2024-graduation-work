@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-v1
-          image: softho0n/frontend-v1-app:latest
+          image: softho0n/frontend-v0-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
