@@ -1,6 +1,8 @@
 import os
+import sys
 
 import streamlit as st
+from dotenv import load_dotenv
 from google.cloud import storage
 from PIL import Image
 from pymongo import MongoClient
@@ -15,14 +17,23 @@ def upload_file(bucket, file, file_name):
 
 
 if __name__ == "__main__":
-    bucket_name = "2024-graduation-music"
-    # Bucket Env, Connect
+    if "dev" in sys.argv:
+        load_dotenv("./config/.env.dev")
+        client = MongoClient(directConnection=True, host=os.getenv("MONGO_DB_HOST"), port=27017)
+    elif "prod" in sys.argv:
+        load_dotenv("./config/.env.prod")
+        client = MongoClient(host=os.getenv("MONGO_DB_HOST"), port=int(os.getenv("MONGO_DB_PORT")), username=os.getenv("MONGO_DB_USERNAME"), password=os.getenv("MONGO_DB_PASSWORD"))
+    else:
+        raise ValueError("Please specify the environment as 'dev' or 'prod'.")
+
+    bucket_name = os.getenv("BUCKET_NAME")
+
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
 
     # MongoDB Client 127.0.0.1 (LocalHost : 27071) 연결
     # 이 과정에서는 DB가 생성되지는 않고 객체만 반환
-    client = MongoClient(directConnection=True, host="127.0.0.1", port=27017)
+    # client = MongoClient(directConnection=True, host=db_host, port=db_port, )
     # DB 중 test_database 사용
     db = client.test_database
     # music collection 사용
