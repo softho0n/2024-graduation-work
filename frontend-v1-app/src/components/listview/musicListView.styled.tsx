@@ -395,9 +395,12 @@ export const SelectWithLabel = ({ label, options, ...rest }) => (
   </Wrapper>
 );
 
-export const AuthWrapper = ({ desc, children }) => (
+export const AuthWrapper = ({ desc, children, handleKeyPress }) => (
   <Positioner>
-    <Input placeholder="노래명 또는 아티스트 이름을 입력하세요."></Input>
+    <Input
+      placeholder="노래명 또는 아티스트 이름을 입력하세요."
+      onKeyDown={handleKeyPress}
+    ></Input>
     <Contents>{children}</Contents>
   </Positioner>
 );
