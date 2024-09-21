@@ -1,8 +1,18 @@
 #!/bin/bash
 
+# 프론트엔드 버전 입력 받기
+echo "사용할 프론트엔드 버전을 입력하세요 (frontend-v1-app 또는 frontend-v2-app): "
+read FRONTEND_VERSION
+
+# 입력된 디렉토리 확인
+if [[ ! -d $FRONTEND_VERSION ]]; then
+    echo "오류: 디렉토리 '$FRONTEND_VERSION'이(가) 존재하지 않습니다."
+    exit 1
+fi
+
 # 프론트엔드 시작
 echo "Starting frontend..."
-cd frontend-v1-app
+cd "$FRONTEND_VERSION"
 npm run dev &  # 백그라운드에서 실행
 FRONTEND_PID=$!
 cd ..
