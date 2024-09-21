@@ -12,7 +12,7 @@
 - Frontend Service - version2 (For Canary Deploy)
 - ~~Payments Service~~
 - ~~Backoffice Service (For Polyglot Programming)~~
-- Search Service
+- ~~Search Service~~
 - ~~Download Service~~
 - ~~Audio Streaming Service (Healthy - For Circuit Breaking)~~
 - Audio Streaming Service (Risky - For Circuit Breaking)
