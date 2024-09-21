@@ -20,3 +20,17 @@ def db_create_new_user(user_collection, username, initial_money):
 
 def db_get_user(user_collection, username):
     return user_collection.find_one({"username": username})
+
+
+def db_payroll_user(user_collection, username):
+    user = user_collection.find_one({"username": username})
+
+    if user is None:
+        raise ValueError("유저를 찾을 수 없습니다.")
+
+    current_money = user.get("money", 0)
+    if current_money < 1000:
+        raise ValueError("잔고가 부족합니다. 최소 1000원이 필요합니다.")
+
+    update_command = {"$set": {"money": current_money - 1000}}
+    user_collection.update_one({"username": username}, update_command)
