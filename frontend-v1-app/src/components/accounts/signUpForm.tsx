@@ -6,13 +6,11 @@ import * as F from "./signUpForm.styled";
 
 const signUpForm = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [name, setName] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "email") {
@@ -23,16 +21,6 @@ const signUpForm = () => {
       setName(value);
     } else if (name === "password") {
       setPassword(value);
-    } else if (name === "campus") {
-      setCampus(value);
-    } else if (name === "major") {
-      setMajor(value);
-    } else if (name === "code") {
-      setCode(value);
-    } else if (name === "studentId") {
-      setStudentId(value);
-    } else if (name === "phone") {
-      setPhone(value);
     }
   };
 
@@ -50,9 +38,7 @@ const signUpForm = () => {
         );
         router.push("/accounts/login");
       } catch (error) {
-        alert(`${process.env.NEXT_PUBLIC_USER_BACKEND_URL_PREFIX}/signup/`);
-        alert("에러 발생, 잠시 후 다시 시도해주세요.");
-        alert(error);
+        alert("아이디 및 닉네임이 중복됩니다.");
       }
     }
     fn();
@@ -70,6 +56,12 @@ const signUpForm = () => {
         label="비밀번호 입력"
         type="password"
         name="password"
+        onChange={handleChange}
+      />
+      <F.InputWithLabel
+        label="닉네임 입력"
+        type="name"
+        name="name"
         onChange={handleChange}
       />
       <F.AuthButton id="signup_btn" onClick={handleSubmit}>
