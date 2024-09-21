@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 COPY . /app
 
 EXPOSE 8501
-ENTRYPOINT ["streamlit", "run", "main.py"]
+ENTRYPOINT ["streamlit", "run", "main.py", "prod"]

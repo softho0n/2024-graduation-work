@@ -1,4 +1,6 @@
+google-cloud-storage
 pymongo
+python-dotenv
 pytz
 requests
 streamlit

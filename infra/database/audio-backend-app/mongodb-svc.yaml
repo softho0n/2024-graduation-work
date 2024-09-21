@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: audio-mongo
+  name: audio-mongo-svc
+spec:
+  ports:
+    - port: 27017
+      protocol: TCP
+  selector:
+    app: audio-mongo
+  clusterIP: None

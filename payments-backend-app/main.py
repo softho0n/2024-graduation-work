@@ -66,6 +66,10 @@ def get_money(request: TokenRequest):
 
     if username:
         current_user = db_get_user(user_collection, username)
-        return {"username": username, "money": current_user["money"]}
+        # print(current_user)
+        if current_user is None:
+            return {"username": username, "money": 0}
+        else:
+            return {"username": username, "money": current_user["money"]}
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")

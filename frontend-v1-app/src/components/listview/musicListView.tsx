@@ -14,6 +14,7 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
+  overflow: "scroll",
   p: 4,
 };
 
@@ -33,7 +34,6 @@ const musicListView = () => {
           `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/get_musics/`,
           data
         );
-
         const subscription_response = await Axios.post(
           `${process.env.NEXT_PUBLIC_SUBSCRIPTION_BACKEND_URL_PREFIX}/get_like_musics/`,
           data
@@ -41,10 +41,9 @@ const musicListView = () => {
 
         const { data: results } = response;
         const { data: likeMusics } = subscription_response;
-
         const updatedResults = results.map((result) => ({
           ...result,
-          like: likeMusics.includes(result.title), // likeMusics에 title이 포함되면 true, 아니면 false
+          like: likeMusics ? likeMusics.includes(result.title) : false,
         }));
 
         setMusics(updatedResults);
@@ -134,7 +133,7 @@ const musicListView = () => {
           {musics.map((result, index) => (
             <F.MusicElement
               key={index}
-              imgUrl="/img.png"
+              imgUrl={result.img_uri}
               title={result.title}
               artist={result.artist}
               label={result.label}
@@ -167,12 +166,27 @@ const musicListView = () => {
           <audio controls autoPlay>
             <source src={audioUrl} type="audio/mpeg" />
           </audio>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Lyrics
+          <Typography
+            id="modal-lyrics-title"
+            variant="h6"
+            component="h2"
+            sx={{ mt: 2 }}
+          >
+            가사
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {modalLyrics}
-          </Typography>
+          <Box
+            sx={{
+              maxHeight: "200px", // 가사 섹션의 최대 높이 설정
+              overflowY: "auto", // 수직 스크롤 활성화
+              border: "1px solid #ccc", // 선택사항: 가시성을 위한 테두리
+              padding: "8px", // 선택사항: 패딩 추가
+              borderRadius: "4px", // 선택사항: 모서리 둥글게
+            }}
+          >
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {modalLyrics}
+            </Typography>
+          </Box>
         </Box>
       </Modal>
     </F.AuthWrapper>
