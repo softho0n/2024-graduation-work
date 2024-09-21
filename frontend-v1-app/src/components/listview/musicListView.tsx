@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-const musicListView = () => {
+const musicListView = ({ liktBtndisplay, headerDisplay, isLikePage }) => {
   const [audioUrl, setAudioUrl] = useState("");
   const [money, setMoney] = useState("");
   const [musics, setMusics] = useState([]);
@@ -46,7 +46,12 @@ const musicListView = () => {
           like: likeMusics ? likeMusics.includes(result.title) : false,
         }));
 
-        setMusics(updatedResults);
+        if (isLikePage === true) {
+          const likedMusics = updatedResults.filter((result) => result.like);
+          setMusics(likedMusics);
+        } else {
+          setMusics(updatedResults);
+        }
       } catch (error) {
         alert(error);
       }
@@ -175,7 +180,10 @@ const musicListView = () => {
   };
 
   return (
-    <F.AuthWrapper handleKeyPress={handleKeyPress}>
+    <F.AuthWrapper
+      handleKeyPress={handleKeyPress}
+      headerDisplay={headerDisplay}
+    >
       <F.verticalWrapper>
         <F.ListViewWrapper>
           {musics.map((result, index) => (
@@ -191,6 +199,7 @@ const musicListView = () => {
               onClickLyrics={() => handleOpen(result.title, result.lyrics)}
               onClickPlay={() => handleOpen(result.title, result.lyrics)}
               onClickDownload={handleDownload}
+              isLikeBtnDisplay={liktBtndisplay}
               index={index}
             />
           ))}

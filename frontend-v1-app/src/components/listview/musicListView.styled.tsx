@@ -87,6 +87,8 @@ const Placeholder = styled.div`
 `;
 
 const Input = styled.input`
+  display: ${({ display }) => display || "block"}; // 기본값은 'block'
+
   flex: 1;
   outline: none;
   border-radius: 25px;
@@ -282,6 +284,7 @@ export const ImgWrapper = styled.div`
 `;
 
 export const IconImgWrapper = styled.div`
+  display: ${({ display }) => display || "block"}; // 기본값은 'block'
   width: auto;
   height: 40%;
   overflow: hidden;
@@ -323,6 +326,7 @@ export const MusicElement = ({
   onClickLyrics,
   onClickPlay,
   onClickDownload,
+  isLikeBtnDisplay,
   index,
   ...rest
 }) => (
@@ -345,7 +349,7 @@ export const MusicElement = ({
           }}
         ></ThumbnailImg>
       </IconImgWrapper>
-      <IconImgWrapper>
+      <IconImgWrapper display={isLikeBtnDisplay}>
         <ThumbnailImg
           src={like ? "/heart.png" : "/blankheart.png"}
           alt="Like Icon"
@@ -395,11 +399,17 @@ export const SelectWithLabel = ({ label, options, ...rest }) => (
   </Wrapper>
 );
 
-export const AuthWrapper = ({ desc, children, handleKeyPress }) => (
+export const AuthWrapper = ({
+  desc,
+  children,
+  handleKeyPress,
+  headerDisplay,
+}) => (
   <Positioner>
     <Input
       placeholder="노래명 또는 아티스트 이름을 입력하세요."
       onKeyDown={handleKeyPress}
+      display={headerDisplay}
     ></Input>
     <Contents>{children}</Contents>
   </Positioner>
