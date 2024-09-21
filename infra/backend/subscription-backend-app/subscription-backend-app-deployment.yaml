@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscription-backend
+  labels:
+    app: subscription-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscription-backend
+  template:
+    metadata:
+      labels:
+        app: subscription-backend
+    spec:
+      containers:
+        - name: server
+          image: softho0n/subscription-backend-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1398

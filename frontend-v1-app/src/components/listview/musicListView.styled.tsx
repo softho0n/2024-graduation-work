@@ -322,6 +322,7 @@ export const MusicElement = ({
   onClickHeart,
   onClickLyrics,
   onClickPlay,
+  onClickDownload,
   index,
   ...rest
 }) => (
@@ -355,7 +356,12 @@ export const MusicElement = ({
         {/* <audio ref={audioRef} src={audioSrc} /> */}
       </IconImgWrapper>
       <IconImgWrapper>
-        <ThumbnailImg src="/download.png"></ThumbnailImg>
+        <ThumbnailImg
+          src="/download.png"
+          onClick={() => {
+            onClickDownload(title);
+          }}
+        ></ThumbnailImg>
       </IconImgWrapper>
       {/* <IconImgWrapper>
         <ThumbnailImg
