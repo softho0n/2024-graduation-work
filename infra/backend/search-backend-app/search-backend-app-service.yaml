@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-backend-svc
+spec:
+  selector:
+    app: search-backend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 1398
+      targetPort: 1398

@@ -9,8 +9,8 @@ cd ..
 
 # 백엔드 서비스 시작
 echo "Starting backend services..."
-SERVICES=("user-backend-app" "payments-backend-app" "audio-streaming-backend-app" "subscription-backend-app" "audio-storage-backend-app" "download-backend-app")
-PORTS=(8000 8001 8002 8003 8004 8005)
+SERVICES=("user-backend-app" "payments-backend-app" "audio-streaming-backend-app" "subscription-backend-app" "audio-storage-backend-app" "download-backend-app" "search-backend-app")
+PORTS=(8000 8001 8002 8003 8004 8005 8006)
 
 for i in ${!SERVICES[@]}; do
     SERVICE=${SERVICES[$i]}

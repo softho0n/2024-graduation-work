@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-backend
+  labels:
+    app: search-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-backend
+  template:
+    metadata:
+      labels:
+        app: search-backend
+    spec:
+      containers:
+        - name: server
+          image: softho0n/search-backend-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1398
+          volumeMounts:
+            - name: gcp-credentials
+              mountPath: /var/secrets/google
+              readOnly: true
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/credentials.json
+      volumes:
+        - name: gcp-credentials
+          secret:
+            secretName: gcp-creds

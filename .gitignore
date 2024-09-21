@@ -11,6 +11,7 @@ audio-storage-backend-app/__pycache__/
 graduation-work-*.json
 backoffice-app/__pycache__/
 download-backend-app/__pycache__/
+search-backend-app/__pycache__/
 .DS_Store
 *.pid
 playground
