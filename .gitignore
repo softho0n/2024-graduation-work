@@ -12,3 +12,4 @@ graduation-work-*.json
 backoffice-app/__pycache__/
 .DS_Store
 *.pid
+playground
