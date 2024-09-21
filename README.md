@@ -9,7 +9,7 @@
 ---
 
 - ~~Frontend Service - version1 (For Canary Deploy)~~
-- Frontend Service - version2 (For Canary Deploy)
+- ~~Frontend Service - version2 (For Canary Deploy)~~
 - ~~Payments Service~~
 - ~~Backoffice Service (For Polyglot Programming)~~
 - ~~Search Service~~
