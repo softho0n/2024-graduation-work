@@ -178,7 +178,6 @@ const musicListView = () => {
               onClickHeart={handleTest}
               onClickLyrics={() => handleOpen(result.title, result.lyrics)}
               onClickPlay={() => handleOpen(result.title, result.lyrics)}
-              // onClickPlay={handleOpen}
               onClickDownload={handleDownload}
               index={index}
             />
