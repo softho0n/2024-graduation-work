@@ -54,29 +54,6 @@ const musicListView = () => {
     fn();
   }, []);
 
-  const handleSubmit = () => {
-    const token = localStorage.getItem("jwtToken");
-    async function fn() {
-      const data = {
-        access_token: token,
-        money_amount: money,
-      };
-      try {
-        const response = await Axios.post(
-          `${process.env.NEXT_PUBLIC_PAYMENTS_BACKEND_URL_PREFIX}/charge/`,
-          data
-        );
-      } catch (error) {
-        alert(error);
-      }
-    }
-    fn();
-  };
-
-  const handlePlay = (musicTitle) => {
-    alert(musicTitle);
-  };
-
   const handleTest = (likeValue, musicTitle, index) => {
     const token = localStorage.getItem("jwtToken");
     const data = {
@@ -108,6 +85,7 @@ const musicListView = () => {
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalLyrics, setModelLyrics] = useState("");
+
   const handleOpen = (title, lyrics) => {
     async function fn() {
       try {
@@ -162,8 +140,42 @@ const musicListView = () => {
 
   const handleClose = () => setOpen(false);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      const token = localStorage.getItem("jwtToken");
+      async function fn() {
+        try {
+          const data = {
+            access_token: token,
+            query: event.target.value,
+          };
+          const response = await Axios.post(
+            `${process.env.NEXT_PUBLIC_SEARCH_BACKEND_URL_PREFIX}/get_musics/`,
+            data
+          );
+          const subscription_response = await Axios.post(
+            `${process.env.NEXT_PUBLIC_SUBSCRIPTION_BACKEND_URL_PREFIX}/get_like_musics/`,
+            data
+          );
+
+          const { data: results } = response;
+          const { data: likeMusics } = subscription_response;
+          const updatedResults = results.map((result) => ({
+            ...result,
+            like: likeMusics ? likeMusics.includes(result.title) : false,
+          }));
+
+          setMusics(updatedResults);
+        } catch (error) {
+          alert(error);
+        }
+      }
+      fn();
+    }
+  };
+
   return (
-    <F.AuthWrapper desc="음원 다운로드를 위한 머니 충전하기">
+    <F.AuthWrapper handleKeyPress={handleKeyPress}>
       <F.verticalWrapper>
         <F.ListViewWrapper>
           {musics.map((result, index) => (
