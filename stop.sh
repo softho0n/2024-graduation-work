@@ -8,7 +8,7 @@ if [ -f frontend.pid ]; then
     rm frontend.pid
 fi
 
-declare -a PORTS=(8000 8001 8002 8003 8004)
+declare -a PORTS=(8000 8001 8002 8003 8004 8005)
 
 for PORT in "${PORTS[@]}"; do
     if [ -f service_${PORT}.pid ]; then
