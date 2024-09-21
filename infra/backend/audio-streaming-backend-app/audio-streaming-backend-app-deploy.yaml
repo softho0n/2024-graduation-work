@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audio-streaming-backend
+  labels:
+    app: audio-streaming-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audio-streaming-backend
+  template:
+    metadata:
+      labels:
+        app: audio-streaming-backend
+    spec:
+      containers:
+        - name: server
+          image: softho0n/audio-streaming-backend-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1398
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: audio-streaming-backend-svc
+spec:
+  selector:
+    app: audio-streaming-backend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 1398
+      targetPort: 1398

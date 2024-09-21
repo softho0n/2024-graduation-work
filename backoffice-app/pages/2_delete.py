@@ -1,9 +1,23 @@
+import os
+import sys
+
 import pandas as pd
 import streamlit as st
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
 # MongoDB 연결 설정
-client = MongoClient(directConnection=True, host="127.0.0.1", port=27017)
+
+if "dev" in sys.argv:
+    load_dotenv("./config/.env.dev")
+    client = MongoClient(directConnection=True, host=os.getenv("MONGO_DB_HOST"), port=27017)
+elif "prod" in sys.argv:
+    load_dotenv("./config/.env.prod")
+    client = MongoClient(host=os.getenv("MONGO_DB_HOST"), port=int(os.getenv("MONGO_DB_PORT")), username=os.getenv("MONGO_DB_USERNAME"), password=os.getenv("MONGO_DB_PASSWORD"))
+else:
+    raise ValueError("Please specify the environment as 'dev' or 'prod'.")
+
+
 db = client.test_database
 collection = db.music
 

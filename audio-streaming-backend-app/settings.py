@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     MONGO_DB_USERNAME: str
     MONGO_DB_PASSWORD: str
     VALIDATE_TOKEN_URL: str
+    AUDIO_STORAGE_URL: str
 
     class Config:
         env_file_encoding = "utf-8"

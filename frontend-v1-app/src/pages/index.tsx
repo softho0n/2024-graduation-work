@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/layout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import MusicListView from "@/components/musicListView";
+import MusicListView from "@/components/listview/musicListView";
 
 const Home = () => {
   const router = useRouter();
