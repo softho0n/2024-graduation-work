@@ -124,6 +124,42 @@ const musicListView = () => {
     fn();
   };
 
+  const handleDownload = (title) => {
+    const token = localStorage.getItem("jwtToken");
+    async function fn() {
+      const data = {
+        access_token: token,
+        music_title: title,
+      };
+
+      try {
+        const response = await Axios.post(
+          `${process.env.NEXT_PUBLIC_DOWNLOAD_BACKEND_URL_PREFIX}/download_music/`,
+          data,
+          {
+            responseType: "blob", // 응답 타입을 blob으로 설정
+          }
+        );
+
+        const filename = title + ".mp3"; // 예: mp3 파일로 가정
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        alert(error);
+      }
+    }
+    fn();
+  };
+
   const handleClose = () => setOpen(false);
 
   return (
@@ -142,6 +178,8 @@ const musicListView = () => {
               onClickHeart={handleTest}
               onClickLyrics={() => handleOpen(result.title, result.lyrics)}
               onClickPlay={() => handleOpen(result.title, result.lyrics)}
+              // onClickPlay={handleOpen}
+              onClickDownload={handleDownload}
               index={index}
             />
           ))}
