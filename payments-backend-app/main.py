@@ -5,6 +5,7 @@ from crud import (  # add_chat,; db_add_friend,; db_get_friend_info,; db_update_
     db_charge_money,
     db_create_new_user,
     db_get_user,
+    db_payroll_user,
 )
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -73,3 +74,20 @@ def get_money(request: TokenRequest):
             return {"username": username, "money": current_user["money"]}
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
+
+
+@app.post("/payments/payroll")
+def payroll(request: TokenRequest):
+    username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
+
+    if username:
+        current_user = db_get_user(user_collection, username)
+        if current_user is None:
+            raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="No Money")
+        else:
+            try:
+                db_payroll_user(user_collection, username)
+            except:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="잔고가 부족합니다.")
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token")
