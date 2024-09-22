@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fe-vs
+spec:
+  hosts:
+    - "softhoon-frontend.info"
+  gateways:
+    - fe-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: frontend-svc.default.svc.cluster.local
+            subset: v1
+            port:
+              number: 3000
+          weight: 99
+        - destination:
+            host: frontend-svc.default.svc.cluster.local
+            subset: v2
+            port:
+              number: 3000
+          weight: 1
