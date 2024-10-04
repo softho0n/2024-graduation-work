@@ -13,6 +13,13 @@ fi
 # 프론트엔드 시작
 echo "Starting frontend..."
 cd "$FRONTEND_VERSION"
+
+# npm install이 처음인지 확인
+if [[ ! -d "node_modules" ]]; then
+    echo "필요한 패키지를 설치합니다..."
+    npm install
+fi
+
 npm run dev &  # 백그라운드에서 실행
 FRONTEND_PID=$!
 cd ..
@@ -26,6 +33,13 @@ for i in ${!SERVICES[@]}; do
     SERVICE=${SERVICES[$i]}
     PORT=${PORTS[$i]}
     cd $SERVICE  # 각 백엔드 서비스 폴더로 이동
+
+    # requirements.txt가 있는지 확인 후 설치
+    if [[ -f "requirements.txt" ]]; then
+        echo "필요한 백엔드 패키지를 설치합니다 ($SERVICE)..."
+        pip3 install -r requirements.txt
+    fi
+
     uvicorn main:app --host 0.0.0.0 --port $PORT &  # 백그라운드에서 실행
     eval "SERVICE_${PORT}_PID=\$!"  # 각 서비스 PID 저장
     cd ..
@@ -34,6 +48,13 @@ done
 # backoffice-app 시작
 echo "Starting backoffice app..."
 cd backoffice-app
+
+# Streamlit이 처음인지 확인
+if [[ ! -d ".streamlit" ]]; then
+    echo "필요한 백오피스 패키지를 설치합니다..."
+    pip3 install -r requirements.txt  # 요구 사항 파일이 있다면 설치
+fi
+
 streamlit run main.py dev &  # 백그라운드에서 실행
 BACKOFFICE_PID=$!
 cd ..
