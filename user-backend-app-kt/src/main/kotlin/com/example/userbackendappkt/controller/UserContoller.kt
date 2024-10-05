@@ -1,5 +1,6 @@
 package com.example.userbackendappkt.controller
 
+import com.example.userbackendappkt.dto.LoginRequestDto
 import com.example.userbackendappkt.dto.SignUpRequesetDto
 import com.example.userbackendappkt.dto.TokenDto
 import com.example.userbackendappkt.service.UserService
@@ -16,7 +17,7 @@ class UserContoller(private val userService: UserService) {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "User Signup", description = "Register a new user and return an access token.")
+    @Operation(summary = "유저 회원가입을 진행한다.", description = "Register a new user and return an access token.")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "201", description = "User registered successfully"),
@@ -26,6 +27,14 @@ class UserContoller(private val userService: UserService) {
     )
     fun registerUser(@RequestBody signUpRequesetDto: SignUpRequesetDto): TokenDto {
         val accessToken = userService.registerUser(signUpRequesetDto)
+        return TokenDto(accessToken)
+    }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "유저 로그인을 진행한다.", description = "Log in a user and return an access token.")
+    fun login(@RequestBody loginRequestDto: LoginRequestDto): TokenDto {
+        val accessToken = userService.loginUser(loginRequestDto)
         return TokenDto(accessToken)
     }
 }
