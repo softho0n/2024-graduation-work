@@ -4,6 +4,19 @@
 
 성균관대학교 소프트웨어학과 졸업작품
 
+# How to start
+
+---
+
+```sh
+# start
+cd scripts
+./start.sh
+
+# stop
+./stop.sh
+```
+
 # Todo List
 
 ---
