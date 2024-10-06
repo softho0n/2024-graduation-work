@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 
 @RestController
@@ -54,5 +55,17 @@ class UserContoller(private val userService: UserService) {
     fun fetchProfile(@RequestParam("access_token") token: String): UserDto {
         val currentUserProfile = userService.fetchUserProfile(token)
         return UserDto(currentUserProfile.username, currentUserProfile.password, currentUserProfile.nickname)
+    }
+
+    @PutMapping("update_profile")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @Operation(summary = "유저의 프로필 정보를 업데이트한다.", description = "Updating User Profile Information.")
+    fun updateProfile(@RequestBody request: SignUpRequesetDto): ResponseEntity<Map<String, Any>> {
+        return try {
+            val msg = userService.updateProfile(request)
+            ResponseEntity(mapOf("status" to 202, "msg" to msg), HttpStatus.ACCEPTED)
+        } catch (e: Exception) {
+            ResponseEntity(mapOf("error" to "Something Wrong."), HttpStatus.UNAUTHORIZED)
+        }
     }
 }

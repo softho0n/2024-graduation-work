@@ -66,6 +66,22 @@ class UserService(
         throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Token.")
     }
 
+    fun updateProfile(request: SignUpRequesetDto): String {
+        val currentUser = dbGetUserByUsername(request.username)
+        val hashedPasword = getPasswordHash(request.password)
+
+        if (currentUser != null) {
+            val updateCommand = User(
+                username = currentUser.username,
+                password = hashedPasword,
+                nickname = currentUser.nickname,
+            )
+            userRepository.save(updateCommand)
+            return "txn was executed well."
+        }
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Profile Update Request.")
+    }
+
     fun checkValidationAccessToken(accessToken: String): Map<String, Any> {
         return try {
             val claims = Jwts.parser()
