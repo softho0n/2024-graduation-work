@@ -57,7 +57,7 @@ class UserContoller(private val userService: UserService) {
         return UserDto(currentUserProfile.username, currentUserProfile.password, currentUserProfile.nickname)
     }
 
-    @PutMapping("update_profile")
+    @PutMapping("/update_profile")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(summary = "유저의 프로필 정보를 업데이트한다.", description = "Updating User Profile Information.")
     fun updateProfile(@RequestBody request: SignUpRequesetDto): ResponseEntity<Map<String, Any>> {
