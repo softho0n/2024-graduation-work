@@ -34,7 +34,7 @@ PORTS=(8000 8001 8002 8003 8004 8005 8006)
 
 for i in ${!SERVICES[@]}; do
     SERVICE=${SERVICES[$i]}
-    SERVICE_DIR="../servers/$SERVICE"  # 각 서비스의 경로 설정
+    SERVICE_DIR="../servers/fastapi/$SERVICE"  # 각 서비스의 경로 설정
     PORT=${PORTS[$i]}
     
     cd $SERVICE_DIR  # 각 백엔드 서비스 폴더로 이동
@@ -52,7 +52,7 @@ done
 
 # backoffice-app 시작
 echo "Starting backoffice app..."
-cd ../servers/backoffice-app  # backoffice-app의 경로 수정
+cd ../servers/fastapi/backoffice-app  # backoffice-app의 경로 수정
 
 # Streamlit이 처음인지 확인
 if [[ ! -d ".streamlit" ]]; then
