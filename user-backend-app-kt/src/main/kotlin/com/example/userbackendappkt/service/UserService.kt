@@ -4,6 +4,8 @@ import com.example.userbackendappkt.dto.LoginRequestDto
 import com.example.userbackendappkt.dto.SignUpRequesetDto
 import com.example.userbackendappkt.dto.User
 import com.example.userbackendappkt.repository.UserRepository
+import io.jsonwebtoken.Jwt
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +19,6 @@ import java.util.*
 class UserService(
     @Autowired private val userRepository: UserRepository,
     @Autowired private val pwdEncoder: BCryptPasswordEncoder,
-    private val passwordEncoder: BCryptPasswordEncoder,
 ) {
 
     companion object {
@@ -47,18 +48,44 @@ class UserService(
 
     fun loginUser(loginRequest: LoginRequestDto): String {
         val user = dbGetUserByUsername(loginRequest.username)
-        if (!verifyPassword(loginRequest.password, user.password)) {
-            throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password.")
+        if (user != null) {
+            if (!verifyPassword(loginRequest.password, user.password)) {
+                throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password.")
+            }
+            return createAccessToken(user.username)
         }
-        return createAccessToken(user.username)
+        throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username.")
     }
 
-    private fun dbGetUserByUsername(username: String): User {
+    fun checkValidationAccessToken(accessToken: String): Map<String, Any> {
+        return try {
+            val claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(accessToken)
+                .body
+
+            val username = claims["sub"] as String?
+            if (username == null) {
+                mapOf("valid" to false, "username" to "")
+            } else {
+                val user = dbGetUserByUsername(username)
+                if (user == null) {
+                    mapOf("valid" to false, "username" to "")
+                } else {
+                    mapOf("valid" to true, "username" to "$username")
+                }
+            }
+        } catch (e: JwtException) {
+            mapOf("valid" to false, "username" to "invalid")
+        }
+    }
+
+    private fun dbGetUserByUsername(username: String): User? {
         return userRepository.findByUsername(username) ?: throw RuntimeException("User not found")
     }
 
     private fun verifyPassword(rawPassword: String, hashedPasword: String): Boolean {
-        return passwordEncoder.matches(rawPassword, hashedPasword)
+        return pwdEncoder.matches(rawPassword, hashedPasword)
     }
 
     private fun getPasswordHash(password: String): String {

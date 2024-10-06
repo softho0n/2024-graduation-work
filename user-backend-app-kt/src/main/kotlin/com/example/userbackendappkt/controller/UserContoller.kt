@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.springframework.http.ResponseEntity
 
 
 @RestController
@@ -36,5 +37,13 @@ class UserContoller(private val userService: UserService) {
     fun login(@RequestBody loginRequestDto: LoginRequestDto): TokenDto {
         val accessToken = userService.loginUser(loginRequestDto)
         return TokenDto(accessToken)
+    }
+
+    @GetMapping("/validate_token")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "유저 토큰 기반으로 인증/인가 처리를 진행한다.", description = "Authorization user using access token.")
+    fun validateToken(@RequestParam("access_token") token: String): ResponseEntity<Map<String, Any>> {
+        val validationResult = userService.checkValidationAccessToken(token)
+        return ResponseEntity.ok(validationResult)
     }
 }
