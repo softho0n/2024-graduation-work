@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: audio-streaming-backend-app-vs
+spec:
+  hosts:
+    - "audio-streaming-backend-svc.default.svc.cluster.local"
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: audio-streaming-backend-svc.default.svc.cluster.local
+            subset: healthy
+            port:
+              number: 1398
+          weight: 80
+        - destination:
+            host: audio-streaming-backend-svc.default.svc.cluster.local
+            subset: risky
+            port:
+              number: 1398
+          weight: 20

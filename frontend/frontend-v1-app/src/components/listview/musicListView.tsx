@@ -90,6 +90,7 @@ const musicListView = ({ liktBtndisplay, headerDisplay, isLikePage }) => {
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalLyrics, setModelLyrics] = useState("");
+  const [error, setError] = useState(null);
 
   const handleOpen = (title, lyrics) => {
     async function fn() {
@@ -99,7 +100,13 @@ const musicListView = ({ liktBtndisplay, headerDisplay, isLikePage }) => {
         );
         setModalContent(title);
         setModelLyrics(lyrics);
-        setOpen(true);
+        const response = await fetch(audioUrl);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || "Unknown error occurred");
+        } else {
+          setOpen(true);
+        }
       } catch (error) {
         alert(error);
       }
