@@ -99,7 +99,13 @@ const musicListView = ({ liktBtndisplay, headerDisplay, isLikePage }) => {
         );
         setModalContent(title);
         setModelLyrics(lyrics);
-        setOpen(true);
+        const response = await fetch(audioUrl);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || "Unknown error occurred");
+        } else {
+          setOpen(true);
+        }
       } catch (error) {
         alert(error);
       }
