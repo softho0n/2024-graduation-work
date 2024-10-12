@@ -17,6 +17,15 @@ cd scripts
 ./stop.sh
 ```
 
+# Remaining Tasks
+
+---
+
+- Apply Circuit breaking onto Audio Streaming SVC (K8s level)
+- Attach HPA rules on Audio Streaming SVC (Istio level)
+- Migration Servers Stack from FastAPI to SpringBoot
+- Implementation of API Gateway
+
 # Todo List
 
 ---
@@ -28,6 +37,6 @@ cd scripts
 - ~~Search Service~~
 - ~~Download Service~~
 - ~~Audio Streaming Service (Healthy - For Circuit Breaking)~~
-- Audio Streaming Service (Risky - For Circuit Breaking)
+- ~~Audio Streaming Service (Risky - For Circuit Breaking)~~
 - ~~Audio Storage Service~~
 - ~~Subscription Service~~
