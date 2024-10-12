@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: audio-streaming-backend
+  name: audio-streaming-backend-healthy
   labels:
     app: audio-streaming-backend
     version: healthy
