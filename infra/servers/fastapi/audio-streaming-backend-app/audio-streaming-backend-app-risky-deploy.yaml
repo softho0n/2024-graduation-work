@@ -4,32 +4,22 @@ metadata:
   name: audio-streaming-backend
   labels:
     app: audio-streaming-backend
+    version: risky
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: audio-streaming-backend
+      version: risky
   template:
     metadata:
       labels:
         app: audio-streaming-backend
+        version: risky
     spec:
       containers:
         - name: server
-          image: softho0n/audio-streaming-backend-app:latest
+          image: softho0n/audio-streaming-backend-app-risky:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 1398
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: audio-streaming-backend-svc
-spec:
-  selector:
-    app: audio-streaming-backend
-  ports:
-    - name: http
-      protocol: TCP
-      port: 1398
-      targetPort: 1398
