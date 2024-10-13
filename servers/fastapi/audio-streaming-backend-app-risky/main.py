@@ -1,5 +1,6 @@
 import json
 import os
+import random
 from typing import List
 
 import httpx
@@ -52,8 +53,26 @@ AUDIO_STORAGE_URL = settings.AUDIO_STORAGE_URL
 
 @app.get("/audio-streaming/play_music/{music_title}")
 async def play_music(music_title: str):
-    # POC -> Only 5xx error occur
-    raise HTTPException(status_code=500, detail="This is a deliberate 500 error. (Risky Audio streaming service)")
+    if random.random() < 0.7:
+        # POC -> Only 5xx error occur
+        # 70% 확률로 에러를 발생시킨다.
+        raise HTTPException(status_code=500, detail="This is a deliberate 500 error. (Risky Audio streaming service)")
+    else:
+        music_file_uri = db_get_music_file_uri(music_collection, music_title)
+        print(music_file_uri)
+        response = requests.get(AUDIO_STORAGE_URL + f"/{music_file_uri}")
+
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail="Failed to fetch audio from storage")
+
+        def iter():
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    yield chunk
+
+        headers = {"Content-Type": response.headers.get("Content-Type", "audio/mp3"), "Content-Length": response.headers.get("Content-Length", ""), "Accept-Ranges": "bytes"}
+
+        return StreamingResponse(iter(), headers=headers, media_type="audio/mp3")
 
 
 @app.post("/audio-streaming/get_musics")
