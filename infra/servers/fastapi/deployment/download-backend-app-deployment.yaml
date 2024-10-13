@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: search-backend
+  name: download-backend
   labels:
-    app: search-backend
+    app: download-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search-backend
+      app: download-backend
   template:
     metadata:
       labels:
-        app: search-backend
+        app: download-backend
     spec:
       containers:
         - name: server
-          image: softho0n/search-backend-app:v1
+          image: softho0n/download-backend-app:v3
           ports:
             - containerPort: 1398
           volumeMounts:

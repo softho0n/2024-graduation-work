@@ -19,6 +19,6 @@ spec:
     spec:
       containers:
         - name: server
-          image: softho0n/audio-streaming-backend-app-risky:v1
+          image: softho0n/audio-streaming-backend-app-risky:v5
           ports:
             - containerPort: 1398

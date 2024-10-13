@@ -60,7 +60,7 @@ async def play_music(music_title: str):
     else:
         music_file_uri = db_get_music_file_uri(music_collection, music_title)
         print(music_file_uri)
-        response = requests.get(AUDIO_STORAGE_URL + f"/{music_file_uri}")
+        response = requests.get(AUDIO_STORAGE_URL + f"{music_file_uri}/")
 
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail="Failed to fetch audio from storage")

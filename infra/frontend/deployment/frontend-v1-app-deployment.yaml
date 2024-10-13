@@ -6,7 +6,7 @@ metadata:
     app: frontend
     version: v1
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: frontend
@@ -19,11 +19,11 @@ spec:
     spec:
       containers:
         - name: frontend-v1
-          image: softho0n/frontend-v1-app:latest
+          image: softho0n/frontend-v1-app:v3
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
             requests:
-              cpu: "100m"
+              cpu: "150m"
               memory: "100Mi"

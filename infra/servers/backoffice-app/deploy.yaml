@@ -19,13 +19,6 @@ spec:
           image: softho0n/backoffice-app:v1
           ports:
             - containerPort: 8501
-          resources:
-            limits:
-              cpu: 1000m
-              memory: 2Gi
-            requests:
-              cpu: 100m
-              memory: 745Mi
           volumeMounts:
             - name: gcp-credentials
               mountPath: /var/secrets/google
@@ -37,17 +30,3 @@ spec:
         - name: gcp-credentials
           secret:
             secretName: gcp-creds
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backoffice-service
-spec:
-  type: NodePort
-  selector:
-    app: streamlit
-  ports:
-    - name: streamlit-port
-      protocol: TCP
-      port: 8501
-      nodePort: 32000

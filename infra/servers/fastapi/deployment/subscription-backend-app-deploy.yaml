@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: server
-          image: softho0n/subscription-backend-app:v1
+          image: softho0n/subscription-backend-app:v3
           ports:
             - containerPort: 1398
