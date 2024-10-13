@@ -16,7 +16,6 @@ spec:
     spec:
       containers:
         - name: server
-          image: softho0n/subscription-backend-app:latest
-          imagePullPolicy: Always
+          image: softho0n/subscription-backend-app:v1
           ports:
             - containerPort: 1398
