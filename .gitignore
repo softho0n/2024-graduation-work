@@ -12,6 +12,10 @@ graduation-work-*.json
 backoffice-app/__pycache__/
 download-backend-app/__pycache__/
 servers/fastapi/**/__pycache__/
+servers/fastapi/subscription-backend-app/__pycache__/*
+servers/fastapi/search-backend-app/__pycache__/*
+servers/fastapi/download-backend-app/__pycache__/*
+servers/fastapi/audio-storage-backend-app/__pycache__/
 .DS_Store
 *.pid
 playground
