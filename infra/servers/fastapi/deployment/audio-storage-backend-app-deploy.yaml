@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: search-backend
+  name: audio-storage-backend
   labels:
-    app: search-backend
+    app: audio-storage-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search-backend
+      app: audio-storage-backend
   template:
     metadata:
       labels:
-        app: search-backend
+        app: audio-storage-backend
     spec:
       containers:
         - name: server
-          image: softho0n/search-backend-app:latest
-          imagePullPolicy: Always
+          image: softho0n/audio-storage-backend-app:v3
           ports:
             - containerPort: 1398
           volumeMounts:

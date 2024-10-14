@@ -23,7 +23,7 @@ from utils import create_access_token, get_password_hash, get_settings, verify_p
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
@@ -51,7 +51,7 @@ app.add_middleware(
 )
 
 
-@app.post("/user/signup")
+@app.post("/user/signup/")
 def register_user(request: SignUpRequest):
     username = request.username
     password = get_password_hash(pwd_context, request.password)
@@ -85,7 +85,7 @@ def register_user(request: SignUpRequest):
     return Token(access_token=access_token, token_type="bearer")
 
 
-@app.post("/user/login")
+@app.post("/user/login/")
 async def login_for_access_token(
     response: Response,
     form_data: LoginRequest,
@@ -112,7 +112,7 @@ async def login_for_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@app.post("/user/validate_token")
+@app.post("/user/validate_token/")
 async def validate_token(request: TokenRequest):
     try:
         payload = jwt.decode(request.access_token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -127,7 +127,7 @@ async def validate_token(request: TokenRequest):
         return {"valid": False, "username": ""}
 
 
-@app.post("/user/profile")
+@app.post("/user/profile/")
 async def get_user_profile(request: TokenRequest):
     try:
         payload = jwt.decode(request.access_token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -148,7 +148,7 @@ async def get_user_profile(request: TokenRequest):
         )
 
 
-@app.post("/user/update_profile")
+@app.post("/user/update_profile/")
 async def update_profile(request: SignUpRequest):
     username = request.username
     password = get_password_hash(pwd_context, request.password)

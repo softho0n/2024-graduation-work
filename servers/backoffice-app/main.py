@@ -68,6 +68,7 @@ if __name__ == "__main__":
 
         new_song = {"title": music_title, "artist": artist, "lyrics": lyrics, "like": False, "isDownloaded": False, "imgUri": img_uri, "audioUri": audio_uri}
         iid = music_collection.insert_one(new_song).inserted_id
+        print(new_song)
         print(iid)
 
         st.success("Success to save new song.")

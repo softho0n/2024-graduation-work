@@ -1,0 +1,61 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-svc
+# spec:
+#   selector:
+#     app: frontend
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 3000
+#       targetPort: 80
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-svc
+# spec:
+#   type: NodePort
+#   selector:
+#     app: frontend
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 80
+#       nodePort: 32001
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+spec:
+  selector:
+    app: frontend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 80
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-svc
+# spec:
+#   type: ClusterIP # NodePort 대신 ClusterIP로 설정
+#   selector:
+#     app: frontend
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 80 # 외부 요청이 이 포트로 들어오게 됨
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-svc
+# spec:
+#   selector:
+#     app: frontend
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 3000
+#       targetPort: 80

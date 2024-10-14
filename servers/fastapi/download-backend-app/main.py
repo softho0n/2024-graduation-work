@@ -16,7 +16,7 @@ from utils import get_settings, payroll_music, validate_token
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
@@ -45,7 +45,7 @@ app.add_middleware(
 AUDIO_STORAGE_URL = settings.AUDIO_STORAGE_URL
 
 
-@app.post("/download/download_music")
+@app.post("/download/download_music/")
 async def download_music(request: MusicRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 
