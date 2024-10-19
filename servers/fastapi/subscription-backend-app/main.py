@@ -23,7 +23,7 @@ from utils import create_access_token, get_password_hash, get_settings, validate
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
@@ -52,7 +52,7 @@ app.add_middleware(
 )
 
 
-@app.post("/subscription/get_like_musics")
+@app.post("/subscription/get_like_musics/")
 def get_like_musics(request: TokenRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 
@@ -62,7 +62,7 @@ def get_like_musics(request: TokenRequest):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
 
 
-@app.post("/subscription/like")
+@app.post("/subscription/like/")
 def like_music(request: SubscriptionRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 
@@ -72,7 +72,7 @@ def like_music(request: SubscriptionRequest):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
 
 
-@app.post("/subscription/unlike")
+@app.post("/subscription/unlike/")
 def unlike_music(request: SubscriptionRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
     if username:

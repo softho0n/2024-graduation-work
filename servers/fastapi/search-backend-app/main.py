@@ -22,7 +22,7 @@ from utils import get_settings, validate_token
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
@@ -49,7 +49,7 @@ app.add_middleware(
 )
 
 
-@app.post("/search/get_musics")
+@app.post("/search/get_musics/")
 def get_musics(request: SearchRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 

@@ -96,7 +96,7 @@ const musicListView = ({ liktBtndisplay, headerDisplay, isLikePage }) => {
     async function fn() {
       try {
         setAudioUrl(
-          `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/play_music/${title}`
+          `${process.env.NEXT_PUBLIC_AUDIO_STREAMING_BACKEND_URL_PREFIX}/play_music/${title}/`
         );
         setModalContent(title);
         setModelLyrics(lyrics);

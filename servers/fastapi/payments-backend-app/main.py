@@ -19,7 +19,7 @@ from utils import get_settings, validate_token
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
@@ -46,7 +46,7 @@ app.add_middleware(
 )
 
 
-@app.post("/payments/charge")
+@app.post("/payments/charge/")
 def charge_money(request: ChargeRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 
@@ -61,7 +61,7 @@ def charge_money(request: ChargeRequest):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
 
 
-@app.post("/payments/get_money")
+@app.post("/payments/get_money/")
 def get_money(request: TokenRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 
@@ -76,7 +76,7 @@ def get_money(request: TokenRequest):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Access Token.")
 
 
-@app.post("/payments/payroll")
+@app.post("/payments/payroll/")
 def payroll(request: TokenRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 

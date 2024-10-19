@@ -1,25 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: audio-streaming-backend-healthy
+  name: audio-streaming-backend-risky
   labels:
     app: audio-streaming-backend
-    version: healthy
+    version: risky
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: audio-streaming-backend
-      version: healthy
+      version: risky
   template:
     metadata:
       labels:
         app: audio-streaming-backend
-        version: healthy
+        version: risky
     spec:
       containers:
         - name: server
-          image: softho0n/audio-streaming-backend-app:latest
-          imagePullPolicy: Always
+          image: softho0n/audio-streaming-backend-app-risky:v7
           ports:
             - containerPort: 1398
