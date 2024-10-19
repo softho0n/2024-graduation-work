@@ -1,0 +1,38 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: audio-streaming-hpa
+  namespace: default
+  annotations:
+    metric-config.object.istio-requests-total.prometheus/per-replica: "true"
+    metric-config.object.istio-requests-total.prometheus/query: |
+      sum(
+        rate(
+          istio_requests_total{
+            destination_workload="audio-streaming-backend-healthy",
+          }[1m]
+        )
+      ) /
+      count(
+        count(
+          container_memory_usage_bytes{
+            namespace="default",
+            pod=~"audio-streaming-backend-healthy.*"
+          }
+        ) by (pod)
+      )
+spec:
+  maxReplicas: 2
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: audio-streaming-backend-healthy
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: istio_requests_total
+        target:
+          type: AverageValue
+          averageValue: 10 # 초당 평균 요청 수

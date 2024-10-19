@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: softho0n/audio-streaming-backend-app:v5
+          image: softho0n/audio-streaming-backend-app:v6
           imagePullPolicy: Always
           ports:
             - containerPort: 1398

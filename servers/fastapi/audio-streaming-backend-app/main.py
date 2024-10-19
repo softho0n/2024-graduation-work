@@ -69,6 +69,11 @@ async def play_music(music_title: str):
     return StreamingResponse(iter(), headers=headers, media_type="audio/mp3")
 
 
+@app.get("/audio-streaming/load_test/")
+async def load_test():
+    return {"Hello! This is Healthy Version."}
+
+
 @app.post("/audio-streaming/get_musics/")
 def get_musics(request: TokenRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)

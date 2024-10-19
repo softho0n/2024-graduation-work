@@ -6,7 +6,7 @@ spec:
   host: audio-streaming-backend-svc.default.svc.cluster.local
   trafficPolicy:
     outlierDetection:
-      interval: 10s
-      consecutive5xxErrors: 3
+      interval: 1s
+      consecutive5xxErrors: 1
       baseEjectionTime: 3m
       maxEjectionPercent: 100

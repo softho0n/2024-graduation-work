@@ -53,10 +53,10 @@ AUDIO_STORAGE_URL = settings.AUDIO_STORAGE_URL
 
 @app.get("/audio-streaming/play_music/{music_title}/")
 async def play_music(music_title: str):
-    if random.random() < 0.7:
+    if random.random() < 0.9:
         # POC -> Only 5xx error occur
-        # 70% 확률로 에러를 발생시킨다.
-        raise HTTPException(status_code=500, detail="This is a deliberate 500 error. (Risky Audio streaming service)")
+        # 90% 확률로 에러를 발생시킨다.
+        raise HTTPException(status_code=503, detail="This is a deliberate 500 error. (Risky Audio streaming service)")
     else:
         music_file_uri = db_get_music_file_uri(music_collection, music_title)
         print(music_file_uri)
@@ -73,6 +73,14 @@ async def play_music(music_title: str):
         headers = {"Content-Type": response.headers.get("Content-Type", "audio/mp3"), "Content-Length": response.headers.get("Content-Length", ""), "Accept-Ranges": "bytes"}
 
         return StreamingResponse(iter(), headers=headers, media_type="audio/mp3")
+
+
+@app.get("/audio-streaming/load_test/")
+async def load_test():
+    if random.random() < 0.3:
+        raise HTTPException(status_code=503, detail="Hello! This is Risky Version. (Error Occur)")
+    else:
+        return {"Hello! This is Risky Version. (200 status)"}
 
 
 @app.post("/audio-streaming/get_musics/")
