@@ -1,25 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: audio-streaming-backend-risky
+  name: payments-backend
   labels:
-    app: audio-streaming-backend
-    version: risky
+    app: payments-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: audio-streaming-backend
-      version: risky
+      app: payments-backend
   template:
     metadata:
       labels:
-        app: audio-streaming-backend
-        version: risky
+        app: payments-backend
     spec:
       containers:
         - name: server
-          image: softho0n/audio-streaming-backend-app-risky:latest
+          image: softho0n/payments-backend-app:v3
           imagePullPolicy: Always
           ports:
             - containerPort: 1398

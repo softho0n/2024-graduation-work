@@ -1,0 +1,12 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: audio-streaming-dr
+spec:
+  host: audio-streaming-backend-svc.default.svc.cluster.local
+  trafficPolicy:
+    outlierDetection:
+      interval: 1s
+      consecutive5xxErrors: 1
+      baseEjectionTime: 3m
+      maxEjectionPercent: 100

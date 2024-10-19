@@ -21,7 +21,7 @@ from utils import get_settings, validate_token
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 env = os.getenv("ENVIRONMENT", "dev")
 if env == "dev":
@@ -50,11 +50,11 @@ app.add_middleware(
 AUDIO_STORAGE_URL = settings.AUDIO_STORAGE_URL
 
 
-@app.get("/audio-streaming/play_music/{music_title}")
+@app.get("/audio-streaming/play_music/{music_title}/")
 async def play_music(music_title: str):
     music_file_uri = db_get_music_file_uri(music_collection, music_title)
     print(music_file_uri)
-    response = requests.get(AUDIO_STORAGE_URL + f"/{music_file_uri}")
+    response = requests.get(AUDIO_STORAGE_URL + f"{music_file_uri}/")
 
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Failed to fetch audio from storage")
@@ -69,7 +69,12 @@ async def play_music(music_title: str):
     return StreamingResponse(iter(), headers=headers, media_type="audio/mp3")
 
 
-@app.post("/audio-streaming/get_musics")
+@app.get("/audio-streaming/load_test/")
+async def load_test():
+    return {"Hello! This is Healthy Version."}
+
+
+@app.post("/audio-streaming/get_musics/")
 def get_musics(request: TokenRequest):
     username = validate_token(settings.VALIDATE_TOKEN_URL, request.access_token)
 

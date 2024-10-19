@@ -8,7 +8,7 @@ from fastapi.responses import Response, StreamingResponse
 from google.cloud import storage
 from utils import get_settings
 
-app = FastAPI()
+app = FastAPI(redirect_slashes=False)
 
 settings = get_settings()
 env = os.getenv("ENVIRONMENT", "dev")
@@ -37,7 +37,7 @@ def parse_music(music_uri: str):
     return music_name
 
 
-@app.get("/audio-storage/get_music/{music_uri:path}")
+@app.get("/audio-storage/get_music/{music_uri:path}/")
 async def get_music(music_uri: str):
     try:
         print(music_uri)
@@ -61,7 +61,7 @@ async def get_music(music_uri: str):
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 
-@app.get("/audio-storage/get_thumbnail/{thumbnail_uri:path}")
+@app.get("/audio-storage/get_thumbnail/{thumbnail_uri:path}/")
 async def get_image(thumbnail_uri: str):
     try:
         print(thumbnail_uri)

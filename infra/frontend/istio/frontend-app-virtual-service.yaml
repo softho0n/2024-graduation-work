@@ -17,10 +17,10 @@ spec:
             subset: v1
             port:
               number: 3000
-          weight: 99
+          weight: 70
         - destination:
             host: frontend-svc.default.svc.cluster.local
             subset: v2
             port:
               number: 3000
-          weight: 1
+          weight: 30
